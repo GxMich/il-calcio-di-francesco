@@ -125,6 +125,7 @@ section { display: flex; flex-direction: column; gap: 16px; }
 @media (hover: hover) { .info a:hover { text-decoration: underline; } }
 
 .fatti { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 12px; }
+.fatti.tre { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .fatto { background: var(--card); border: 2px solid var(--linea); border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .fatto b { font-family: var(--f-display); font-weight: 400; font-size: 1.6rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
 .fatto span { color: var(--muted); font-size: .9rem; }
@@ -172,6 +173,23 @@ section { display: flex; flex-direction: column; gap: 16px; }
 @media (hover: hover) { .compatta .v:hover { background: var(--linea); } }
 .compatta .perde { color: var(--muted); font-weight: 600; }
 .nome-lungo { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.compatta.fut { grid-template-columns: 1fr 92px 1fr; padding-right: 12px; }
+.compatta.fut .s { font: 600 .95rem/1.15 var(--f-numeri); color: #e8f2ea; padding: 4px 6px; display: flex; flex-direction: column; }
+.compatta.fut .s b { font-weight: 700; color: var(--led); text-transform: capitalize; }
+
+/* Calendario */
+.conto { background: var(--cuore-bg); border: 2px solid var(--cuore-bordo); border-radius: 18px; padding: 14px 16px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+.conto > img { width: 48px; height: 48px; object-fit: contain; }
+.conto .grande { font-family: var(--f-display); font-size: 1.5rem; line-height: 1.1; }
+.conto p { margin: 0; }
+details.giornata { display: flex; flex-direction: column; }
+details.giornata summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 14px; min-height: 48px; background: var(--card); border: 2px solid var(--linea); border-radius: 12px; font-weight: 800; }
+details.giornata summary::-webkit-details-marker { display: none; }
+details.giornata summary::after { content: ""; width: 10px; height: 10px; border-right: 2.5px solid var(--muted); border-bottom: 2.5px solid var(--muted); transform: rotate(45deg); transition: transform .2s; flex: none; margin-top: -4px; }
+details.giornata[open] summary::after { transform: rotate(-135deg); margin-top: 4px; }
+details.giornata summary span { color: var(--muted); font-weight: 600; font-size: .9rem; }
+details.giornata .gruppo { margin-top: 6px; }
+.link-tutto { font-weight: 800; text-decoration: none; padding: 10px 0; align-self: start; }
 .record { font-weight: 700; margin: 0; }
 
 /* ---------- Classifica ---------- */
@@ -237,8 +255,8 @@ footer p { margin: 0; }
 
   /* Tab bar in basso, come le app dell'iPhone */
   .tabs { position: fixed; top: auto; bottom: 0; left: 0; right: 0; background: var(--barra); -webkit-backdrop-filter: saturate(180%) blur(18px); backdrop-filter: saturate(180%) blur(18px); border-top: 1px solid rgba(255,255,255,.08); padding-bottom: env(safe-area-inset-bottom, 0px); z-index: 20; }
-  .tabs .wrap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding-block: 4px 2px; overflow: visible; }
-  .tabs a { flex-direction: column; justify-content: center; gap: 2px; min-height: 52px; padding: 4px 2px; font: 700 .7rem/1.1 var(--f-testo); letter-spacing: 0; color: var(--barra-testo); border-radius: 12px; text-align: center; }
+  .tabs .wrap { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; padding-block: 4px 2px; overflow: visible; }
+  .tabs a { flex-direction: column; justify-content: center; gap: 2px; min-height: 52px; padding: 4px 1px; font: 700 .66rem/1.1 var(--f-testo); letter-spacing: 0; color: var(--barra-testo); border-radius: 12px; text-align: center; }
   .tabs a svg { display: block; width: 26px; height: 26px; }
   .tabs a .lungo { display: none; }
   .tabs a .corto { display: inline; }
@@ -253,6 +271,10 @@ footer p { margin: 0; }
   .fatto { padding: 12px 14px; }
   .fatto b { font-size: 1.35rem; }
   .fatto span { font-size: .85rem; }
+  .fatti.tre { gap: 8px; }
+  .fatti.tre .fatto { padding: 10px 10px; }
+  .fatti.tre .fatto b { font-size: 1.15rem; }
+  .fatti.tre .fatto span { font-size: .78rem; line-height: 1.3; }
   .tua { padding: 14px; gap: 12px 20px; }
   .tua > img { width: 52px; height: 52px; }
   .filtri, .filtri label, .filtri select { width: 100%; }
@@ -270,7 +292,7 @@ footer p { margin: 0; }
   .compatta .d { display: none; }
 }
 @media (max-width: 380px) {
-  .tabs a { font-size: .64rem; }
+  .tabs a { font-size: .6rem; }
   .compatta img { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -302,6 +324,10 @@ footer p { margin: 0; }
     <a href="#giornata">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
       <span class="lungo">Ultima giornata</span><span class="corto">Giornata</span>
+    </a>
+    <a href="#calendario">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>
+      <span class="lungo">Prossime partite</span><span class="corto">Prossime</span>
     </a>
     <a href="#ultime-100">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2" fill="currentColor"/><circle cx="4.5" cy="12" r="1.2" fill="currentColor"/><circle cx="4.5" cy="18" r="1.2" fill="currentColor"/></svg>
@@ -345,6 +371,12 @@ if (!DATI) {
   $("#vista").innerHTML = "<section><h2>Mancano i dati</h2><p>Esegui <code>python aggiorna_sito.py</code> e poi apri <code>index.html</code>.</p></section>";
   throw new Error("nessun dato");
 }
+
+// Orari in ora italiana (gestisce da solo l'ora legale)
+const fmtOra = new Intl.DateTimeFormat("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" });
+DATI.partite.forEach(p => { if (p.ts) p.ora = fmtOra.format(new Date(p.ts)); });
+const OGGI = new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Rome" }); // AAAA-MM-GG
+const giorniTra = d => Math.round((new Date(d + "T12:00:00") - new Date(OGGI + "T12:00:00")) / 86400000);
 
 const giocate = DATI.partite.filter(p => p.gc !== null).sort((a, b) => (b.data + b.ora).localeCompare(a.data + a.ora));
 const squadre = Object.keys(DATI.stemmi).sort((a, b) => a.localeCompare(b, "it"));
@@ -424,7 +456,64 @@ function vistaGiornata() {
     ${prossime.length ? `<section>
       <div class="intesta"><h2>Prossime partite</h2><p>Giornata ${giornataProssima} · orari italiani</p></div>
       <div class="griglia">${prossime.filter(p => p.giornata === giornataProssima).map(cartaPartita).join("")}</div>
+      <a class="link-tutto" href="#calendario">Tutte le partite da giocare →</a>
     </section>` : ""}`;
+}
+
+// ---------- Vista: prossime partite (calendario) ----------
+let filtroCal = "";
+function rigaFutura(p) {
+  const mia = cuore && (p.casa === cuore || p.ospiti === cuore);
+  return `<div class="compatta fut ${mia ? "mia" : ""}">
+    <span class="c"><span class="nome-lungo">${esc(p.casa)}</span>${stemma(p.casa, 24)}</span>
+    <span class="s"><b>${giorno(p.data, { weekday: "short", day: "numeric", month: "short" })}</b>${p.rinviata ? "rinviata" : esc(p.ora || "ora da decidere")}</span>
+    <span class="o">${stemma(p.ospiti, 24)}<span class="nome-lungo">${esc(p.ospiti)}</span></span>
+  </div>`;
+}
+function vistaCalendario() {
+  const future = DATI.partite.filter(p => p.gc === null && p.data >= OGGI).sort((a, b) => (a.data + a.ora).localeCompare(b.data + b.ora));
+  const rinviate = DATI.partite.filter(p => p.gc === null && p.data < OGGI);
+  const lista = filtroCal ? future.filter(p => p.casa === filtroCal || p.ospiti === filtroCal) : future;
+  const gruppi = new Map();
+  lista.forEach(p => { if (!gruppi.has(p.giornata)) gruppi.set(p.giornata, []); gruppi.get(p.giornata).push(p); });
+  const numGiornate = new Set(future.map(p => p.giornata)).size;
+  const ultima = future.at(-1);
+
+  let conto = "";
+  const chi = filtroCal || cuore;
+  const prossima = chi && future.find(p => p.casa === chi || p.ospiti === chi);
+  if (prossima) {
+    const g = giorniTra(prossima.data);
+    const quando = g <= 0 ? "oggi!" : g === 1 ? "domani!" : `tra ${g} giorni`;
+    conto = `<div class="conto">${stemma(chi, 48)}
+      <div><div class="etichetta">Prossima partita ${chi === cuore ? "della tua squadra" : "di " + esc(chi)}</div>
+      <div class="grande">${quando}</div>
+      <p>${esc(prossima.casa)} - ${esc(prossima.ospiti)} · ${giorno(prossima.data, { weekday: "long", day: "numeric", month: "long" })}${prossima.ora ? ` alle ${esc(prossima.ora)}` : ""}</p></div></div>`;
+  }
+
+  const blocchi = [...gruppi.entries()].map(([g, ps], i) => {
+    const dal = giorno(ps[0].data, { day: "numeric", month: "short" }), al = giorno(ps.at(-1).data, { day: "numeric", month: "short" });
+    return `<details class="giornata" ${filtroCal || i < 2 ? "open" : ""}>
+      <summary>Giornata ${g} <span>${dal === al ? dal : `${dal} – ${al}`}</span></summary>
+      <div class="gruppo">${ps.map(rigaFutura).join("")}</div>
+    </details>`;
+  }).join("");
+
+  return `<section>
+    <div class="intesta"><h2>Prossime partite</h2><p>orari italiani</p></div>
+    ${conto}
+    <div class="filtri"><label for="filtro-cal">Mostra solo
+      <select id="filtro-cal"><option value="">Tutte le squadre</option>${squadre.map(s => `<option ${s === filtroCal ? "selected" : ""}>${esc(s)}</option>`).join("")}</select></label>
+    </div>
+    <div class="fatti tre">
+      <div class="fatto"><b>${lista.length}</b><span>partite da giocare${filtroCal ? ` per ${esc(filtroCal)}` : ""}</span></div>
+      <div class="fatto"><b>${numGiornate}</b><span>giornate alla fine</span></div>
+      ${ultima ? `<div class="fatto"><b>${giorno(ultima.data, { day: "numeric", month: "short" })}</b><span>l'ultima giornata (${new Date(ultima.data).getFullYear()})</span></div>` : ""}
+    </div>
+    ${rinviate.length ? `<p class="nota">Partite rinviate da recuperare: ${rinviate.map(p => `${esc(p.casa)}-${esc(p.ospiti)}`).join(", ")}.</p>` : ""}
+    <div class="elenco">${blocchi || "<p>Il campionato è finito!</p>"}</div>
+    <p class="nota">Le giornate più lontane hanno orari provvisori: la Lega li decide qualche settimana prima.</p>
+  </section>`;
 }
 
 // ---------- Vista: ultime 100 ----------
@@ -475,7 +564,7 @@ function vistaCento() {
         <select id="filtro-squadra"><option value="">Tutte le squadre</option>${squadre.map(s => `<option ${s === filtro ? "selected" : ""}>${esc(s)}</option>`).join("")}</select></label>
       </div>
       ${record}
-      <div class="fatti">
+      <div class="fatti tre">
         <div class="fatto"><b>${lista.length}</b><span>partite</span></div>
         <div class="fatto"><b>${gol}</b><span>gol in tutto</span></div>
         <div class="fatto"><b>${(gol / n).toFixed(1).replace(".", ",")}</b><span>gol a partita, in media</span></div>
@@ -581,10 +670,11 @@ document.addEventListener("click", ev => {
 });
 document.addEventListener("change", ev => {
   if (ev.target.id === "filtro-squadra") { filtro = ev.target.value; mostra(); }
+  if (ev.target.id === "filtro-cal") { filtroCal = ev.target.value; mostra(); }
 });
 
 // ---------- Navigazione ----------
-const VISTE = { "giornata": vistaGiornata, "ultime-100": vistaCento, "classifica": vistaClassifica, "esultanze": vistaEsultanze };
+const VISTE = { "giornata": vistaGiornata, "calendario": vistaCalendario, "ultime-100": vistaCento, "classifica": vistaClassifica, "esultanze": vistaEsultanze };
 function mostra() {
   const nomeVista = VISTE[location.hash.slice(1)] ? location.hash.slice(1) : "giornata";
   document.querySelectorAll(".tabs a").forEach(a => {

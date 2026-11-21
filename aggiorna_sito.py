@@ -16,6 +16,7 @@ Poi apri index.html con il browser.
 
 import datetime as dt
 import json
+import os
 import re
 import time
 import unicodedata
@@ -76,7 +77,7 @@ def api(percorso, file_cache, valido_per_giorni=0):
             return json.loads(f.read_text(encoding="utf-8"))
     testo = scarica(f"{API}/{percorso}")
     f.write_text(testo, encoding="utf-8")
-    time.sleep(2.5)  # la chiave gratuita accetta poche richieste al minuto
+    time.sleep(3)  # la chiave gratuita accetta poche richieste al minuto
     return json.loads(testo)
 
 
@@ -97,6 +98,10 @@ def giornata(stagione, r):
         finite = eventi and all(e.get("intHomeScore") is not None for e in eventi)
         if finite and all(e["dateEvent"] < (OGGI - dt.timedelta(days=3)).isoformat() for e in eventi):
             return eventi  # giornata chiusa: non serve riscaricarla
+        # sul computer: se l'abbiamo scaricata da meno di 6 ore va bene così
+        # (su GitHub, dove c'è la variabile CI, si riscarica sempre)
+        if not os.environ.get("CI") and time.time() - f.stat().st_mtime < 6 * 3600:
+            return eventi
     print(f" - {stagione}, giornata {r}")
     return api(f"eventsround.php?id={LEGA}&r={r}&s={stagione}", f"{stagione}_g{r}.json").get("events") or []
 
@@ -107,7 +112,9 @@ def converti(e):
         "stagione": e["strSeason"],
         "giornata": int(e["intRound"] or 0),
         "data": e["dateEvent"],
-        "ora": (e.get("strTimeLocal") or e.get("strTime") or "")[:5],
+        "ora": (e.get("strTimeLocal") or "")[:5],
+        # orario in UTC: la pagina lo trasforma in ora italiana (anche col cambio dell'ora legale)
+        "ts": (e["strTimestamp"] + "Z") if e.get("strTimestamp") and not (e.get("strTime") or "").startswith("00:00") else "",
         "casa": nome(e["strHomeTeam"]),
         "ospiti": nome(e["strAwayTeam"]),
         "gc": None if e["intHomeScore"] is None else int(e["intHomeScore"]),
@@ -295,13 +302,11 @@ def main():
     print(f"Scarico la Serie A {stagione}...")
 
     partite = []
-    for r in range(1, 39):
+    for r in range(1, 39):  # tutte le 38 giornate: quelle giocate e quelle ancora da giocare
         eventi = giornata(stagione, r)
         if not eventi:
             break
         partite += [converti(e) for e in eventi]
-        if all(e["intHomeScore"] is None for e in eventi):
-            break  # questa è la prossima giornata: le successive non sono ancora giocate
 
     giocate = [p for p in partite if p["gc"] is not None]
     if len(giocate) < PARTITE_DA_MOSTRARE:  # inizio stagione: prendo anche la stagione prima
