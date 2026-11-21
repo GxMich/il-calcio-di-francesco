@@ -212,6 +212,15 @@ ESULTANZE = [
 ]
 
 
+ANIMAZIONI = {
+    "Cristiano_Ronaldo": "siuuu", "Kylian_Mbappé": "braccia-incrociate", "Erling_Haaland": "meditazione",
+    "Lionel_Messi": "dita-al-cielo", "Paulo_Dybala": "maschera", "Jude_Bellingham": "braccia-spalancate",
+    "Antoine_Griezmann": "balletto-l", "Francesco_Totti": "selfie", "Alessandro_Del_Piero": "linguaccia",
+    "Marco_Tardelli": "urlo", "Bebeto": "bambino", "Paul_Pogba": "dab", "Roger_Milla": "bandierina",
+    "Peter_Crouch": "robot",
+}
+
+
 def foto_wikipedia(titolo):
     """Foto del calciatore da Wikipedia (sempre con licenza libera) + crediti."""
     f = CACHE / f"wiki_{slug(titolo)}.json"
@@ -361,7 +370,14 @@ def main():
     esultanze = []
     for e in ESULTANZE:
         foto, credito = foto_wikipedia(e["wiki"])
-        esultanze.append({**{k: v for k, v in e.items() if k != "wiki"}, "foto": foto, "credito": credito})
+        voce = {**{k: v for k, v in e.items() if k != "wiki"}, "foto": foto, "credito": credito}
+        # video animato della mossa (creato con HyperFrames, cartella video/)
+        anim = ANIMAZIONI.get(e["wiki"])
+        if anim and (QUI / "video" / f"{anim}.mp4").exists():
+            voce["video"] = f"video/{anim}.mp4"
+            if (QUI / "video" / f"{anim}.jpg").exists():
+                voce["poster"] = f"video/{anim}.jpg"
+        esultanze.append(voce)
 
     dati = {
         "aggiornato": dt.datetime.now().strftime("%Y-%m-%d %H:%M"),

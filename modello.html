@@ -219,7 +219,13 @@ tr.mia td { background: var(--cuore-bg); }
 .es figure img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 20%; display: block; }
 .es figure figcaption { position: absolute; left: 10px; bottom: 10px; background: var(--giallo); color: #13201a; font: 400 .95rem var(--f-display); padding: 4px 10px; border-radius: 8px; max-width: calc(100% - 20px); }
 .es .corpo { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-.es .chi { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.es figure video { width: 100%; height: auto; aspect-ratio: 1 / 1; display: block; object-fit: cover; background: #0b1830; }
+.es figure .play { position: absolute; inset: 0; margin: auto; width: 76px; height: 76px; border-radius: 50%; border: 4px solid #13201a; background: var(--giallo); display: grid; place-items: center; cursor: pointer; box-shadow: 0 6px 0 rgba(0,0,0,.35); }
+.es figure .play svg { width: 30px; height: 30px; margin-left: 5px; }
+.es figure.va .play { display: none; }
+.es .chi { display: flex; justify-content: space-between; gap: 8px; align-items: center; flex-wrap: wrap; }
+.es .chi .persona { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.es .chi .avatar { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; border: 3px solid var(--giallo); flex: none; }
 .es .chi b { font-weight: 800; font-size: 1.1rem; }
 .es .chi span { color: var(--muted); font-size: .85rem; font-weight: 600; }
 .es p { margin: 0; }
@@ -623,12 +629,15 @@ function vistaEsultanze() {
     </div>
     <div class="esultanze">${DATI.esultanze.map((e, i) => `
       <article class="es" id="es-${i}">
-        <figure>
+        ${e.video ? `<figure class="anim">
+          <video src="${e.video}" ${e.poster ? `poster="${e.poster}"` : ""} width="720" height="720" muted loop playsinline preload="none" aria-label="Animazione: ${esc(e.mossa)}"></video>
+          <button class="play" type="button" aria-label="Guarda l'animazione di ${esc(e.mossa)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3l15 9-15 9z" fill="#13201a"/></svg></button>
+        </figure>` : `<figure>
           ${e.foto ? `<img src="${e.foto}" alt="${esc(e.giocatore)}" width="640" height="480" loading="${i < 2 ? "eager" : "lazy"}" decoding="async">` : ""}
           <figcaption>${esc(e.mossa)}</figcaption>
-        </figure>
+        </figure>`}
         <div class="corpo">
-          <div class="chi"><b>${esc(e.giocatore)}</b><span>${esc(e.paese)}</span></div>
+          <div class="chi"><span class="persona">${e.video && e.foto ? `<img class="avatar" src="${e.foto}" alt="" width="46" height="46" loading="lazy" decoding="async">` : ""}<b>${esc(e.giocatore)}</b></span><span>${esc(e.paese)}</span></div>
           <p>${esc(e.storia)}</p>
           <div class="etichetta">Come si fa</div>
           <ol>${e.passi.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
@@ -657,9 +666,28 @@ function prova(i) {
   timerProva = setInterval(vai, 1300);
 }
 
+// ---------- Video delle esultanze: partono da soli quando si vedono ----------
+let osservatore = null;
+const suona = v => { const p = v.play(); if (p) p.then(() => v.closest("figure").classList.add("va")).catch(() => v.closest("figure").classList.remove("va")); };
+const ferma = v => { v.pause(); v.closest("figure").classList.remove("va"); };
+function avviaVideo() {
+  if (osservatore) osservatore.disconnect();
+  const video = document.querySelectorAll(".es video");
+  if (!video.length || !("IntersectionObserver" in window)) return;
+  if (riduciMovimento()) return; // chi preferisce meno movimento li avvia col bottone
+  osservatore = new IntersectionObserver(voci => voci.forEach(v => v.isIntersecting ? suona(v.target) : ferma(v.target)), { threshold: 0.6 });
+  video.forEach(v => osservatore.observe(v));
+}
+
 document.addEventListener("click", ev => {
+  const fig = ev.target.closest("figure.anim");
+  if (fig) { const v = fig.querySelector("video"); v.paused ? suona(v) : ferma(v); }
   const b = ev.target.closest(".prova");
-  if (b) prova(b.dataset.i);
+  if (b) {
+    prova(b.dataset.i);
+    const v = document.querySelector(`#es-${b.dataset.i} video`);
+    if (v) { v.currentTime = 0; suona(v); }
+  }
   if (ev.target.closest("#sorpresa")) {
     const i = Math.floor(Math.random() * DATI.esultanze.length);
     const card = $(`#es-${i}`);
@@ -682,6 +710,7 @@ function mostra() {
     else a.removeAttribute("aria-current");
   });
   $("#vista").innerHTML = VISTE[nomeVista]();
+  avviaVideo();
 }
 // Toccare di nuovo la sezione già aperta riporta in cima, come nelle app dell'iPhone
 document.querySelector(".tabs").addEventListener("click", ev => {
