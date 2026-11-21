@@ -1,0 +1,603 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Il Calcio di Francesco</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Risultati della Serie A, le ultime 100 partite, la classifica e le esultanze più famose dei calciatori.">
+<meta name="theme-color" content="#1d7a3c">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Calcio">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icona-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="Il Calcio di Francesco">
+<meta property="og:description" content="Risultati della Serie A, classifica ed esultanze famose dei calciatori.">
+<meta property="og:url" content="https://gxmich.github.io/il-calcio-di-francesco/">
+<meta property="og:image" content="https://gxmich.github.io/il-calcio-di-francesco/anteprima.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Nunito:wght@400;600;800&family=Barlow+Condensed:wght@600;700&display=swap">
+<style>
+/* Layout: pitch-striped header, scoreboard tabs (top bar on desktop, iOS-style tab bar on phones), one view at a time. */
+:root {
+  --erba: #1d7a3c;
+  --erba-2: #19703a;
+  --gesso: #ffffff;
+  --bg: #f2f6f1;
+  --card: #ffffff;
+  --fg: #11261a;
+  --muted: #586c60;
+  --linea: #d5e2d7;
+  --tabellone: #13201a;
+  --barra: rgba(19, 32, 26, .9);
+  --barra-testo: #a9bbb0;
+  --led: #ffcf1a;
+  --giallo: #ffcf1a;
+  --rosso: #d4383b;
+  --vinta: #1e9b52;
+  --pari: #8c9a92;
+  --persa: #d4383b;
+  --cuore-bg: #fff6cc;
+  --cuore-bordo: #e6b400;
+  --link: #126c35;
+  --f-display: "Bungee", "Arial Black", system-ui, sans-serif;
+  --f-testo: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-numeri: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --tab-h: 58px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1711; --card: #12241a; --fg: #e6f1e9; --muted: #9bb2a3; --linea: #23402f;
+    --tabellone: #050b08; --barra: rgba(5, 11, 8, .88); --cuore-bg: #3a3210; --cuore-bordo: #e6b400; --link: #7fd9a0;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b1711; --card: #12241a; --fg: #e6f1e9; --muted: #9bb2a3; --linea: #23402f;
+  --tabellone: #050b08; --barra: rgba(5, 11, 8, .88); --cuore-bg: #3a3210; --cuore-bordo: #e6b400; --link: #7fd9a0;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-testo); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+a { color: var(--link); }
+a, button, select, label { touch-action: manipulation; }
+:focus-visible { outline: 3px solid var(--giallo); outline-offset: 2px; border-radius: 6px; }
+.wrap { max-width: 1100px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+img { max-width: 100%; }
+
+/* ---------- Campo (header) ---------- */
+.campo {
+  background:
+    radial-gradient(circle at 50% 120%, transparent 0 88px, rgba(255,255,255,.5) 89px 92px, transparent 93px),
+    linear-gradient(90deg, transparent calc(50% - 1.5px), rgba(255,255,255,.5) calc(50% - 1.5px) calc(50% + 1.5px), transparent calc(50% + 1.5px)),
+    repeating-linear-gradient(90deg, var(--erba) 0 64px, var(--erba-2) 64px 128px);
+  color: var(--gesso);
+  border-bottom: 4px solid var(--gesso);
+}
+.campo .wrap { padding-block: 28px 22px; display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: end; justify-content: space-between; }
+.logo { display: flex; gap: 14px; align-items: center; min-width: 0; }
+.logo svg { width: 56px; height: 56px; flex: none; filter: drop-shadow(0 3px 0 rgba(0,0,0,.25)); }
+h1 { font-family: var(--f-display); font-weight: 400; font-size: clamp(1.5rem, 5vw, 2.8rem); line-height: 1.05; margin: 0; text-shadow: 0 3px 0 rgba(0,0,0,.25); text-wrap: balance; }
+.sotto { margin: 6px 0 0; font-weight: 600; opacity: .95; }
+.cuore { display: flex; flex-direction: column; gap: 4px; font-weight: 800; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; }
+.cuore select { font: 600 1rem var(--f-testo); padding: 10px 12px; min-height: 44px; border-radius: 12px; border: 2px solid var(--gesso); background: rgba(0,0,0,.25); color: var(--gesso); min-width: 200px; }
+.cuore select option { color: #11261a; background: #fff; }
+
+/* ---------- Tabellone (tabs) ---------- */
+.tabs { background: var(--tabellone); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--erba); }
+.tabs .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 8px; scrollbar-width: none; }
+.tabs a { flex: none; display: flex; align-items: center; gap: 8px; font-family: var(--f-display); font-size: .9rem; color: #c9d6cd; text-decoration: none; padding: 10px 14px; border-radius: 10px; letter-spacing: .02em; }
+.tabs a svg { display: none; }
+.tabs a .corto { display: none; }
+.tabs a[aria-current="page"] { background: var(--led); color: #13201a; }
+@media (hover: hover) { .tabs a:not([aria-current]):hover { color: var(--led); } }
+
+main .wrap { padding-block: 28px 48px; display: flex; flex-direction: column; gap: 32px; }
+h2 { font-family: var(--f-display); font-weight: 400; font-size: clamp(1.3rem, 3.5vw, 1.9rem); margin: 0; line-height: 1.1; text-wrap: balance; }
+h3 { font-family: var(--f-display); font-weight: 400; font-size: 1.1rem; margin: 0; }
+.etichetta { font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.intesta { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; }
+.intesta p { margin: 0; color: var(--muted); }
+section { display: flex; flex-direction: column; gap: 16px; }
+
+/* ---------- Partite ---------- */
+.griglia { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 14px; }
+.partita { background: var(--card); border: 2px solid var(--linea); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.partita.mia { border-color: var(--cuore-bordo); background: var(--cuore-bg); }
+.riga { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; }
+.sq { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; font-weight: 800; font-size: .95rem; line-height: 1.15; min-width: 0; overflow-wrap: anywhere; }
+.sq img { width: 44px; height: 44px; object-fit: contain; }
+.sq.perde { color: var(--muted); font-weight: 600; }
+.punteggio { background: var(--tabellone); color: var(--led); font-family: var(--f-display); font-size: 1.7rem; padding: 6px 12px; border-radius: 10px; letter-spacing: .05em; font-variant-numeric: tabular-nums; min-width: 92px; text-align: center; box-shadow: inset 0 0 0 2px rgba(255,207,26,.18); }
+.punteggio.ora { font-family: var(--f-numeri); font-size: 1.4rem; color: #e8f2ea; }
+.info { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 12px; font-size: .85rem; color: var(--muted); }
+.info a { font-weight: 800; text-decoration: none; padding: 8px 0; }
+@media (hover: hover) { .info a:hover { text-decoration: underline; } }
+
+.fatti { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 12px; }
+.fatto { background: var(--card); border: 2px solid var(--linea); border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.fatto b { font-family: var(--f-display); font-weight: 400; font-size: 1.6rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.fatto span { color: var(--muted); font-size: .9rem; }
+
+/* La tua squadra */
+.tua { background: var(--cuore-bg); border: 2px solid var(--cuore-bordo); border-radius: 18px; padding: 16px; display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center; }
+.tua > img { width: 64px; height: 64px; object-fit: contain; }
+.tua .nome { font-family: var(--f-display); font-size: 1.5rem; line-height: 1; }
+.tua dl { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 0; }
+.tua dt { font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.tua dd { margin: 0; font-weight: 800; font-size: 1.05rem; }
+
+/* Forma V N P */
+.forma { display: inline-flex; gap: 3px; }
+.forma i { font-style: normal; width: 22px; height: 22px; border-radius: 6px; display: inline-grid; place-items: center; font: 700 .8rem var(--f-numeri); color: #fff; }
+.forma .V { background: var(--vinta); } .forma .N { background: var(--pari); } .forma .P { background: var(--persa); }
+
+/* ---------- Ultime 100 ---------- */
+.filtri { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; }
+.filtri label { display: flex; flex-direction: column; gap: 4px; font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.filtri select { font: 600 1rem var(--f-testo); padding: 10px 12px; min-height: 44px; border-radius: 12px; border: 2px solid var(--linea); background: var(--card); color: var(--fg); min-width: 220px; }
+.barra-esiti { display: flex; height: 34px; border-radius: 10px; overflow: hidden; font: 700 .95rem var(--f-numeri); color: #fff; }
+.barra-esiti div { display: flex; align-items: center; justify-content: center; min-width: 0; white-space: nowrap; overflow: hidden; }
+.legenda { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: .9rem; color: var(--muted); margin-top: 6px; }
+.legenda span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; background: var(--c); }
+
+.grafico { background: var(--card); border: 2px solid var(--linea); border-radius: 16px; padding: 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+.barre { display: flex; align-items: end; gap: 6px; height: 170px; min-width: 340px; border-bottom: 2px solid var(--linea); margin-top: 12px; }
+.barre .b { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: end; gap: 3px; height: 100%; }
+.barre .b div { width: 100%; max-width: 46px; background: var(--erba); border-radius: 6px 6px 0 0; }
+.barre .b span { font: 700 .9rem var(--f-numeri); font-variant-numeric: tabular-nums; }
+.assex { display: flex; gap: 6px; min-width: 340px; margin-top: 4px; }
+.assex span { flex: 1; text-align: center; font: 600 .8rem var(--f-numeri); color: var(--muted); }
+
+.elenco { display: flex; flex-direction: column; gap: 18px; }
+.gruppo { display: flex; flex-direction: column; gap: 6px; }
+.compatta { background: var(--card); border: 2px solid var(--linea); border-radius: 12px; padding: 6px 6px 6px 12px; display: grid; grid-template-columns: 64px 1fr auto 1fr 40px; gap: 8px; align-items: center; font-size: .95rem; min-height: 52px; }
+.compatta.mia { border-color: var(--cuore-bordo); background: var(--cuore-bg); }
+.compatta .d { font: 600 .85rem var(--f-numeri); color: var(--muted); }
+.compatta .c { display: flex; align-items: center; gap: 6px; justify-content: end; text-align: right; font-weight: 700; min-width: 0; }
+.compatta .o { display: flex; align-items: center; gap: 6px; font-weight: 700; min-width: 0; }
+.compatta img { width: 24px; height: 24px; object-fit: contain; flex: none; }
+.compatta .s { background: var(--tabellone); color: var(--led); font: 400 1rem var(--f-display); padding: 3px 8px; border-radius: 6px; font-variant-numeric: tabular-nums; min-width: 58px; text-align: center; }
+.compatta .v { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px; text-decoration: none; font-weight: 800; color: var(--link); }
+@media (hover: hover) { .compatta .v:hover { background: var(--linea); } }
+.compatta .perde { color: var(--muted); font-weight: 600; }
+.nome-lungo { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.record { font-weight: 700; margin: 0; }
+
+/* ---------- Classifica ---------- */
+.tabella-box { overflow-x: auto; -webkit-overflow-scrolling: touch; background: var(--card); border: 2px solid var(--linea); border-radius: 16px; }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-variant-numeric: tabular-nums; }
+th, td { padding: 9px 10px; text-align: center; }
+th { font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-bottom: 2px solid var(--linea); }
+td { border-bottom: 1px solid var(--linea); }
+tr:last-child td { border-bottom: 0; }
+td.squadra, th.squadra { text-align: left; }
+td.squadra { font-weight: 800; }
+td.squadra span { display: inline-flex; align-items: center; gap: 8px; }
+td.squadra img { width: 24px; height: 24px; object-fit: contain; flex: none; }
+td.pt { font-family: var(--f-display); font-size: 1.05rem; }
+td.pos { font: 700 1.05rem var(--f-numeri); border-left: 5px solid var(--z, transparent); }
+tr.mia td { background: var(--cuore-bg); }
+.zone { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: .9rem; color: var(--muted); }
+.zone span::before { content: ""; display: inline-block; width: 5px; height: 14px; margin-right: 6px; vertical-align: -2px; background: var(--c); }
+.nota { margin: 0; font-size: .85rem; color: var(--muted); }
+
+/* ---------- Esultanze ---------- */
+.esultanze { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 18px; }
+.es { background: var(--card); border: 2px solid var(--linea); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; scroll-margin: 80px 0 calc(var(--tab-h) + 24px); }
+.es.flash { animation: flash 1.4s ease 2; }
+@keyframes flash { 50% { border-color: var(--giallo); box-shadow: 0 0 0 6px rgba(255,207,26,.45); } }
+.es figure { margin: 0; position: relative; background: var(--tabellone); }
+.es figure img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 20%; display: block; }
+.es figure figcaption { position: absolute; left: 10px; bottom: 10px; background: var(--giallo); color: #13201a; font: 400 .95rem var(--f-display); padding: 4px 10px; border-radius: 8px; max-width: calc(100% - 20px); }
+.es .corpo { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.es .chi { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.es .chi b { font-weight: 800; font-size: 1.1rem; }
+.es .chi span { color: var(--muted); font-size: .85rem; font-weight: 600; }
+.es p { margin: 0; }
+.es ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; counter-reset: passo; }
+.es li { counter-increment: passo; display: flex; gap: 10px; align-items: center; padding: 6px 8px; border-radius: 10px; transition: background .2s, transform .2s; }
+.es li::before { content: counter(passo); flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--erba); color: #fff; font: 400 .85rem var(--f-display); }
+.es li.attivo { background: var(--giallo); color: #13201a; transform: scale(1.03); font-weight: 800; }
+.es .bottoni { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+.btn { font: 800 .95rem var(--f-testo); border: 2px solid var(--erba); background: var(--erba); color: #fff; padding: 10px 16px; min-height: 44px; border-radius: 12px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; -webkit-appearance: none; appearance: none; }
+.btn.chiaro { background: transparent; color: var(--link); border-color: var(--linea); }
+.btn:active { transform: scale(.97); }
+@media (hover: hover) { .btn:hover { filter: brightness(1.1); } }
+.credito { font-size: .72rem; color: var(--muted); overflow-wrap: anywhere; }
+.credito a { color: inherit; }
+.sorpresa { background: var(--tabellone); color: #e8f2ea; border-radius: 18px; padding: 18px; display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; justify-content: space-between; }
+.sorpresa p { margin: 0; max-width: 60ch; }
+.sorpresa .btn { background: var(--giallo); border-color: var(--giallo); color: #13201a; font-size: 1.05rem; }
+
+footer { border-top: 2px solid var(--linea); }
+footer .wrap { padding-block: 20px 32px; color: var(--muted); font-size: .85rem; display: flex; flex-direction: column; gap: 4px; }
+footer p { margin: 0; }
+
+/* ---------- Telefono (iPhone e Android) ---------- */
+@media (max-width: 700px) {
+  html { scroll-padding-bottom: calc(var(--tab-h) + env(safe-area-inset-bottom, 0px)); }
+  body { padding-bottom: calc(var(--tab-h) + env(safe-area-inset-bottom, 0px)); }
+  .campo .wrap { padding-block: 18px 16px; gap: 14px; }
+  .logo { gap: 12px; }
+  .logo svg { width: 46px; height: 46px; }
+  .sotto { font-size: .9rem; }
+  .cuore { width: 100%; }
+  .cuore select { width: 100%; min-width: 0; }
+
+  /* Tab bar in basso, come le app dell'iPhone */
+  .tabs { position: fixed; top: auto; bottom: 0; left: 0; right: 0; background: var(--barra); -webkit-backdrop-filter: saturate(180%) blur(18px); backdrop-filter: saturate(180%) blur(18px); border-top: 1px solid rgba(255,255,255,.08); padding-bottom: env(safe-area-inset-bottom, 0px); z-index: 20; }
+  .tabs .wrap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding-block: 4px 2px; overflow: visible; }
+  .tabs a { flex-direction: column; justify-content: center; gap: 2px; min-height: 52px; padding: 4px 2px; font: 700 .7rem/1.1 var(--f-testo); letter-spacing: 0; color: var(--barra-testo); border-radius: 12px; text-align: center; }
+  .tabs a svg { display: block; width: 26px; height: 26px; }
+  .tabs a .lungo { display: none; }
+  .tabs a .corto { display: inline; }
+  .tabs a[aria-current="page"] { background: transparent; color: var(--led); }
+  .tabs a:active { background: rgba(255,255,255,.06); }
+
+  main .wrap { padding-block: 22px 32px; gap: 28px; }
+  .griglia { gap: 12px; }
+  .partita { padding: 12px; }
+  .sq img { width: 40px; height: 40px; }
+  .punteggio { font-size: 1.45rem; min-width: 80px; padding: 6px 10px; }
+  .fatto { padding: 12px 14px; }
+  .fatto b { font-size: 1.35rem; }
+  .fatto span { font-size: .85rem; }
+  .tua { padding: 14px; gap: 12px 20px; }
+  .tua > img { width: 52px; height: 52px; }
+  .filtri, .filtri label, .filtri select { width: 100%; }
+  .sorpresa .btn { width: 100%; }
+  .es .bottoni .btn { flex: 1; }
+}
+@media (max-width: 560px) {
+  table { min-width: 0; }
+  th.x, td.x { display: none; }
+  th, td { padding: 9px 6px; }
+  td.squadra img { width: 22px; height: 22px; }
+  .forma { gap: 2px; }
+  .forma i { width: 19px; height: 19px; font-size: .72rem; border-radius: 5px; }
+  .compatta { grid-template-columns: 1fr auto 1fr 40px; padding-left: 10px; font-size: .9rem; }
+  .compatta .d { display: none; }
+}
+@media (max-width: 380px) {
+  .tabs a { font-size: .64rem; }
+  .compatta img { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+
+<header class="campo">
+  <div class="wrap">
+    <div class="logo">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="29" fill="#fff" stroke="#11261a" stroke-width="3"/>
+        <polygon points="32,20 43,28 39,41 25,41 21,28" fill="#11261a"/>
+        <path d="M32 20 L32 4 M43 28 L58 22 M39 41 L48 55 M25 41 L16 55 M21 28 L6 22" stroke="#11261a" stroke-width="3" fill="none"/>
+      </svg>
+      <div>
+        <h1>Il Calcio di Francesco</h1>
+        <p class="sotto" id="sottotitolo">Serie A</p>
+      </div>
+    </div>
+    <label class="cuore" for="scelta-cuore">La mia squadra del cuore
+      <select id="scelta-cuore"><option value="">Scegli…</option></select>
+    </label>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Sezioni">
+  <div class="wrap">
+    <a href="#giornata">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+      <span class="lungo">Ultima giornata</span><span class="corto">Giornata</span>
+    </a>
+    <a href="#ultime-100">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2" fill="currentColor"/><circle cx="4.5" cy="12" r="1.2" fill="currentColor"/><circle cx="4.5" cy="18" r="1.2" fill="currentColor"/></svg>
+      <span class="lungo">Ultime 100 partite</span><span class="corto">Ultime 100</span>
+    </a>
+    <a href="#classifica">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M8 21V10h8v11M2 21v-6h6M16 21v-8h6v8M1 21h22"/></svg>
+      <span class="lungo">Classifica</span><span class="corto">Classifica</span>
+    </a>
+    <a href="#esultanze">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+      <span class="lungo">Esultanze famose</span><span class="corto">Esultanze</span>
+    </a>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap" id="vista"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Il sito di Francesco. Risultati: TheSportsDB (gratis). Foto dei calciatori: Wikimedia Commons, licenze libere (autori sotto ogni foto).</p>
+    <p id="agg"></p>
+  </div>
+</footer>
+
+<script>
+const DATI = {"aggiornato": "2026-11-21 10:11", "stagione": "2026-2027", "partite": [{"id": "2482138", "stagione": "2026-2027", "giornata": 1, "data": "2026-08-22", "ora": "18:30", "casa": "Udinese", "ospiti": "Como", "gc": 1, "go": 1, "stadio": "Bluenergy Stadium", "video": "https://www.youtube.com/watch?v=YWg6eiPtYoU", "rinviata": false}, {"id": "2482139", "stagione": "2026-2027", "giornata": 1, "data": "2026-08-22", "ora": "20:45", "casa": "Genoa", "ospiti": "Napoli", "gc": 0, "go": 2, "stadio": "Stadio Luigi Ferraris", "video": "https://www.youtube.com/watch?v=bYgRVR5ZfoQ", "rinviata": false}, {"id": "2482144", "stagione": "2026-2027", "giornata": 1, "data": "2026-08-22", "ora": "18:30", "casa": "Inter", "ospiti": "Monza", "gc": 4, "go": 1, "stadio": "Stadio Giuseppe Meazza", "video": "https://www.youtube.com/watch?v=xy83b-Gcrr0", "rinviata": false}, {"id": "2482147", "stagione": "2026-2027", "giornata": 1, "data": "2026-08-22", "ora": "20:45", "casa": "Parma", "ospiti": "Cagliari", "gc": 0, "go": 1, "stadio": "Stadio Ennio Tardini", "video": "https://www.youtube.com/watch?v=lktyJMDfy5U", "rinviata": false}, {"id": "2482141", "stagione": "2026-2027", "giornata": 1, "data": "2026-08-23", "ora": "20:45", "casa": "Atalanta", "ospiti": "Sassuolo", "gc": 2, "go": 1, "stadio": "New Balance Arena", "video": "https://www.youtube.com/watch?v=Mb92KLexsJ8", "rinviata": false}, {"id": "2482143", "stagione": "2026-2027", "giornata": 1, "data": "2026-08-23", "ora": "20:45", "casa": "Torino", "ospiti": "Milan", "gc": 1, "go": 2, "stadio": "Stadio Olimpico Grande Torino", "video": "https://www.youtube.com/watch?v=KbdobIB3fIk", "rinviata": false}, {"id": "2482145", "stagione": "2026-2027", "giornata": 1, "data": "2026-08-23", "ora": "18:30", "casa": "Frosinone", "ospiti": "Juventus", "gc": 0, "go": 1, "stadio": "Stadio Benito Stirpe", "video": "https://www.youtube.com/watch?v=jmFr9JzaI-U", "rinviata": false}, {"id": "2482146", "stagione": "2026-2027", "giornata": 1, "data": "2026-08-23", "ora": "18:30", "casa": "Venezia", "ospiti": "Lecce", "gc": 0, "go": 2, "stadio": "Stadio Pierluigi Penzo", "video": "https://www.youtube.com/watch?v=0lCAEmRmSPo", "rinviata": false}, {"id": "2482140", "stagione": "2026-2027", "giornata": 1, "data": "2026-08-24", "ora": "20:45", "casa": "Roma", "ospiti": "Fiorentina", "gc": 4, "go": 0, "stadio": "Stadio Olimpico", "video": "https://www.youtube.com/watch?v=nsgdRnzgieY", "rinviata": false}, {"id": "2482142", "stagione": "2026-2027", "giornata": 1, "data": "2026-08-24", "ora": "18:30", "casa": "Bologna", "ospiti": "Lazio", "gc": 0, "go": 1, "stadio": "Stadio Renato Dall'Ara", "video": "https://www.youtube.com/watch?v=YS-YcfQ9RVA", "rinviata": false}, {"id": "2482150", "stagione": "2026-2027", "giornata": 2, "data": "2026-08-28", "ora": "20:45", "casa": "Milan", "ospiti": "Venezia", "gc": 2, "go": 0, "stadio": "Stadio Giuseppe Meazza", "video": "https://www.youtube.com/watch?v=8ogTeYqNm2E", "rinviata": false}, {"id": "2482149", "stagione": "2026-2027", "giornata": 2, "data": "2026-08-29", "ora": "18:30", "casa": "Sassuolo", "ospiti": "Torino", "gc": 2, "go": 1, "stadio": "Mapei Stadium – Città del Tricolore", "video": "https://www.youtube.com/watch?v=jEnqGRFnJ_M", "rinviata": false}, {"id": "2482153", "stagione": "2026-2027", "giornata": 2, "data": "2026-08-29", "ora": "20:45", "casa": "Juventus", "ospiti": "Parma", "gc": 2, "go": 0, "stadio": "Allianz Stadium Turin", "video": "https://www.youtube.com/watch?v=0c-wpIQS6Yc", "rinviata": false}, {"id": "2482155", "stagione": "2026-2027", "giornata": 2, "data": "2026-08-29", "ora": "18:30", "casa": "Fiorentina", "ospiti": "Frosinone", "gc": 0, "go": 3, "stadio": "Stadio Artemio Franchi", "video": "https://www.youtube.com/watch?v=7T-rAoxlAWw", "rinviata": false}, {"id": "2482157", "stagione": "2026-2027", "giornata": 2, "data": "2026-08-29", "ora": "18:30", "casa": "Monza", "ospiti": "Udinese", "gc": 2, "go": 3, "stadio": "U-Power Stadium", "video": "https://www.youtube.com/watch?v=ZGTmcudRtMs", "rinviata": false}, {"id": "2482148", "stagione": "2026-2027", "giornata": 2, "data": "2026-08-30", "ora": "20:45", "casa": "Lazio", "ospiti": "Genoa", "gc": 1, "go": 0, "stadio": "Stadio Olimpico", "video": "https://www.youtube.com/watch?v=YtfUV294hGo", "rinviata": false}, {"id": "2482151", "stagione": "2026-2027", "giornata": 2, "data": "2026-08-30", "ora": "20:45", "casa": "Cagliari", "ospiti": "Inter", "gc": 0, "go": 1, "stadio": "Unipol Domus", "video": "https://www.youtube.com/watch?v=rQaUtoggWDw", "rinviata": false}, {"id": "2482152", "stagione": "2026-2027", "giornata": 2, "data": "2026-08-30", "ora": "18:30", "casa": "Napoli", "ospiti": "Como", "gc": 1, "go": 2, "stadio": "Stadio Diego Armando Maradona", "video": "https://www.youtube.com/watch?v=gCL4nQnqr9Y", "rinviata": false}, {"id": "2482154", "stagione": "2026-2027", "giornata": 2, "data": "2026-08-31", "ora": "20:45", "casa": "Atalanta", "ospiti": "Bologna", "gc": 1, "go": 0, "stadio": "New Balance Arena", "video": "https://www.youtube.com/watch?v=LYOXkS8JqM0", "rinviata": false}, {"id": "2482156", "stagione": "2026-2027", "giornata": 2, "data": "2026-08-31", "ora": "18:30", "casa": "Lecce", "ospiti": "Roma", "gc": 0, "go": 4, "stadio": "Stadio Via del mare", "video": "https://www.youtube.com/watch?v=u7dUrTt4_FM", "rinviata": false}, {"id": "2482160", "stagione": "2026-2027", "giornata": 3, "data": "2026-09-04", "ora": "20:45", "casa": "Genoa", "ospiti": "Como", "gc": 1, "go": 4, "stadio": "Stadio Luigi Ferraris", "video": "https://www.youtube.com/watch?v=sNlOicyj6Ng", "rinviata": false}, {"id": "2482162", "stagione": "2026-2027", "giornata": 3, "data": "2026-09-05", "ora": "20:45", "casa": "Roma", "ospiti": "Atalanta", "gc": 2, "go": 1, "stadio": "Stadio Olimpico", "video": "https://www.youtube.com/watch?v=BcGJd0fz4WY", "rinviata": false}, {"id": "2482164", "stagione": "2026-2027", "giornata": 3, "data": "2026-09-05", "ora": "17:15", "casa": "Fiorentina", "ospiti": "Torino", "gc": 1, "go": 2, "stadio": "Stadio Artemio Franchi", "video": "https://www.youtube.com/watch?v=WNE05r5SA3k", "rinviata": false}, {"id": "2482165", "stagione": "2026-2027", "giornata": 3, "data": "2026-09-05", "ora": "18:00", "casa": "Inter", "ospiti": "Napoli", "gc": 3, "go": 2, "stadio": "Stadio Giuseppe Meazza", "video": "https://www.youtube.com/watch?v=yDrJbKNnk9E", "rinviata": false}, {"id": "2482161", "stagione": "2026-2027", "giornata": 3, "data": "2026-09-06", "ora": "20:45", "casa": "Juventus", "ospiti": "Milan", "gc": 1, "go": 1, "stadio": "Allianz Stadium Turin", "video": "https://www.youtube.com/watch?v=QWDVyr-HzHU", "rinviata": false}, {"id": "2482163", "stagione": "2026-2027", "giornata": 3, "data": "2026-09-06", "ora": "18:00", "casa": "Bologna", "ospiti": "Sassuolo", "gc": 2, "go": 2, "stadio": "Stadio Renato Dall'Ara", "video": "https://www.youtube.com/watch?v=CDVRijNA8Vs", "rinviata": false}, {"id": "2482166", "stagione": "2026-2027", "giornata": 3, "data": "2026-09-06", "ora": "15:00", "casa": "Frosinone", "ospiti": "Venezia", "gc": 3, "go": 2, "stadio": "Stadio Benito Stirpe", "video": "https://www.youtube.com/watch?v=dOWvWWcFvjk", "rinviata": false}, {"id": "2482167", "stagione": "2026-2027", "giornata": 3, "data": "2026-09-06", "ora": "15:00", "casa": "Parma", "ospiti": "Monza", "gc": 1, "go": 1, "stadio": "Stadio Ennio Tardini", "video": "https://www.youtube.com/watch?v=xJqNMnis1G0", "rinviata": false}, {"id": "2482158", "stagione": "2026-2027", "giornata": 3, "data": "2026-09-07", "ora": "18:30", "casa": "Cagliari", "ospiti": "Lecce", "gc": 1, "go": 0, "stadio": "Unipol Domus", "video": "https://www.youtube.com/watch?v=evb6CnWXdys", "rinviata": false}, {"id": "2482159", "stagione": "2026-2027", "giornata": 3, "data": "2026-09-07", "ora": "20:45", "casa": "Udinese", "ospiti": "Lazio", "gc": 1, "go": 2, "stadio": "Bluenergy Stadium", "video": "https://www.youtube.com/watch?v=2Xiy_RSXw5A", "rinviata": false}, {"id": "2482175", "stagione": "2026-2027", "giornata": 4, "data": "2026-09-11", "ora": "20:45", "casa": "Venezia", "ospiti": "Fiorentina", "gc": 2, "go": 4, "stadio": "Stadio Pierluigi Penzo", "video": "https://www.youtube.com/watch?v=0roH3ja-QZU", "rinviata": false}, {"id": "2482168", "stagione": "2026-2027", "giornata": 4, "data": "2026-09-12", "ora": "18:00", "casa": "Lazio", "ospiti": "Milan", "gc": 2, "go": 2, "stadio": "Stadio Olimpico", "video": "https://www.youtube.com/watch?v=APXDuovx_QY", "rinviata": false}, {"id": "2482171", "stagione": "2026-2027", "giornata": 4, "data": "2026-09-12", "ora": "15:00", "casa": "Genoa", "ospiti": "Frosinone", "gc": 1, "go": 1, "stadio": "Stadio Luigi Ferraris", "video": "https://www.youtube.com/watch?v=lc42XBmSqsc", "rinviata": false}, {"id": "2482172", "stagione": "2026-2027", "giornata": 4, "data": "2026-09-12", "ora": "20:45", "casa": "Atalanta", "ospiti": "Cagliari", "gc": 1, "go": 2, "stadio": "New Balance Arena", "video": "https://www.youtube.com/watch?v=IXxBoMpwGUU", "rinviata": false}, {"id": "2482169", "stagione": "2026-2027", "giornata": 4, "data": "2026-09-13", "ora": "20:45", "casa": "Sassuolo", "ospiti": "Juventus", "gc": 3, "go": 2, "stadio": "Mapei Stadium – Città del Tricolore", "video": "https://www.youtube.com/watch?v=BaA-yo-MJmk", "rinviata": false}, {"id": "2482170", "stagione": "2026-2027", "giornata": 4, "data": "2026-09-13", "ora": "18:00", "casa": "Napoli", "ospiti": "Bologna", "gc": 1, "go": 0, "stadio": "Stadio Diego Armando Maradona", "video": "https://www.youtube.com/watch?v=ouVacPrwPuk", "rinviata": false}, {"id": "2482176", "stagione": "2026-2027", "giornata": 4, "data": "2026-09-13", "ora": "15:00", "casa": "Lecce", "ospiti": "Monza", "gc": 3, "go": 2, "stadio": "Stadio Via del mare", "video": "https://www.youtube.com/watch?v=qk-9ChD8QAY", "rinviata": false}, {"id": "2482173", "stagione": "2026-2027", "giornata": 4, "data": "2026-09-14", "ora": "18:30", "casa": "Torino", "ospiti": "Roma", "gc": 0, "go": 2, "stadio": "Stadio Olimpico Grande Torino", "video": "", "rinviata": false}, {"id": "2482174", "stagione": "2026-2027", "giornata": 4, "data": "2026-09-14", "ora": "20:45", "casa": "Inter", "ospiti": "Udinese", "gc": 5, "go": 3, "stadio": "Stadio Giuseppe Meazza", "video": "https://www.youtube.com/watch?v=lUJb1MDUsjE", "rinviata": false}, {"id": "2482177", "stagione": "2026-2027", "giornata": 4, "data": "2026-09-14", "ora": "18:30", "casa": "Como", "ospiti": "Parma", "gc": 2, "go": 1, "stadio": "Stadio Giuseppe Sinigaglia", "video": "https://www.youtube.com/watch?v=aNe3zx9_5f4", "rinviata": false}, {"id": "2482187", "stagione": "2026-2027", "giornata": 5, "data": "2026-09-18", "ora": "20:45", "casa": "Monza", "ospiti": "Sassuolo", "gc": 2, "go": 1, "stadio": "U-Power Stadium", "video": "https://www.youtube.com/watch?v=INZbYj_wNKs", "rinviata": false}, {"id": "2482179", "stagione": "2026-2027", "giornata": 5, "data": "2026-09-19", "ora": "15:00", "casa": "Udinese", "ospiti": "Cagliari", "gc": 0, "go": 1, "stadio": "Bluenergy Stadium", "video": "https://www.youtube.com/watch?v=RSTdAPjfeLE", "rinviata": false}, {"id": "2482181", "stagione": "2026-2027", "giornata": 5, "data": "2026-09-19", "ora": "18:00", "casa": "Roma", "ospiti": "Inter", "gc": 2, "go": 2, "stadio": "Stadio Olimpico", "video": "https://www.youtube.com/watch?v=sw8FOhBHACc", "rinviata": false}, {"id": "2482182", "stagione": "2026-2027", "giornata": 5, "data": "2026-09-19", "ora": "15:00", "casa": "Bologna", "ospiti": "Torino", "gc": 1, "go": 1, "stadio": "Stadio Renato Dall'Ara", "video": "https://www.youtube.com/watch?v=klX7Qw6IH0s", "rinviata": false}, {"id": "2482185", "stagione": "2026-2027", "giornata": 5, "data": "2026-09-19", "ora": "20:45", "casa": "Venezia", "ospiti": "Lazio", "gc": 0, "go": 2, "stadio": "Stadio Pierluigi Penzo", "video": "https://www.youtube.com/watch?v=a4axHXlbIs0", "rinviata": false}, {"id": "2482178", "stagione": "2026-2027", "giornata": 5, "data": "2026-09-20", "ora": "20:45", "casa": "Milan", "ospiti": "Lecce", "gc": 3, "go": 0, "stadio": "Stadio Giuseppe Meazza", "video": "https://www.youtube.com/watch?v=dVzz_vYqjPc", "rinviata": false}, {"id": "2482180", "stagione": "2026-2027", "giornata": 5, "data": "2026-09-20", "ora": "18:00", "casa": "Juventus", "ospiti": "Atalanta", "gc": 2, "go": 0, "stadio": "Allianz Stadium Turin", "video": "https://www.youtube.com/watch?v=3h4PItU2hLw", "rinviata": false}, {"id": "2482183", "stagione": "2026-2027", "giornata": 5, "data": "2026-09-20", "ora": "12:30", "casa": "Fiorentina", "ospiti": "Napoli", "gc": 1, "go": 1, "stadio": "Stadio Artemio Franchi", "video": "https://www.youtube.com/watch?v=fa0DH-3sg8U", "rinviata": false}, {"id": "2482184", "stagione": "2026-2027", "giornata": 5, "data": "2026-09-20", "ora": "15:00", "casa": "Frosinone", "ospiti": "Como", "gc": 2, "go": 0, "stadio": "Stadio Benito Stirpe", "video": "https://www.youtube.com/watch?v=8ZBuqXlZ3Ko", "rinviata": false}, {"id": "2482186", "stagione": "2026-2027", "giornata": 5, "data": "2026-09-20", "ora": "15:00", "casa": "Parma", "ospiti": "Genoa", "gc": 2, "go": 1, "stadio": "Stadio Ennio Tardini", "video": "https://www.youtube.com/watch?v=eDI_q4r7bpU", "rinviata": false}, {"id": "2482191", "stagione": "2026-2027", "giornata": 6, "data": "2026-10-10", "ora": "18:45", "casa": "Napoli", "ospiti": "Frosinone", "gc": 3, "go": 0, "stadio": "Stadio Diego Armando Maradona", "video": "https://www.youtube.com/watch?v=5SKpbkJCRww", "rinviata": false}, {"id": "2482192", "stagione": "2026-2027", "giornata": 6, "data": "2026-10-10", "ora": "13:00", "casa": "Genoa", "ospiti": "Fiorentina", "gc": 2, "go": 1, "stadio": "Stadio Luigi Ferraris", "video": "https://www.youtube.com/watch?v=nISw5oWDk6o", "rinviata": false}, {"id": "2482195", "stagione": "2026-2027", "giornata": 6, "data": "2026-10-10", "ora": "16:00", "casa": "Inter", "ospiti": "Parma", "gc": 3, "go": 0, "stadio": "Stadio Giuseppe Meazza", "video": "https://www.youtube.com/watch?v=jEXQ-1kGhWo", "rinviata": false}, {"id": "2482188", "stagione": "2026-2027", "giornata": 6, "data": "2026-10-11", "ora": "13:00", "casa": "Lazio", "ospiti": "Monza", "gc": 3, "go": 1, "stadio": "Stadio Olimpico", "video": "https://www.youtube.com/watch?v=CShAJFhPMvo", "rinviata": false}, {"id": "2482189", "stagione": "2026-2027", "giornata": 6, "data": "2026-10-11", "ora": "16:00", "casa": "Sassuolo", "ospiti": "Milan", "gc": 1, "go": 1, "stadio": "Mapei Stadium – Città del Tricolore", "video": "https://www.youtube.com/watch?v=1nX_hmbN36g", "rinviata": false}, {"id": "2482190", "stagione": "2026-2027", "giornata": 6, "data": "2026-10-11", "ora": "18:45", "casa": "Cagliari", "ospiti": "Juventus", "gc": 1, "go": 1, "stadio": "Unipol Domus", "video": "https://www.youtube.com/watch?v=BIxpk9MMVCg", "rinviata": false}, {"id": "2482196", "stagione": "2026-2027", "giornata": 6, "data": "2026-10-11", "ora": "13:00", "casa": "Lecce", "ospiti": "Bologna", "gc": 1, "go": 2, "stadio": "Stadio Via del mare", "video": "https://www.youtube.com/watch?v=TbZz6Rq3BPo", "rinviata": false}, {"id": "2482197", "stagione": "2026-2027", "giornata": 6, "data": "2026-10-11", "ora": "10:30", "casa": "Como", "ospiti": "Roma", "gc": 0, "go": 0, "stadio": "Stadio Giuseppe Sinigaglia", "video": "https://www.youtube.com/watch?v=VBoMq5Qhf5w", "rinviata": false}, {"id": "2482193", "stagione": "2026-2027", "giornata": 6, "data": "2026-10-12", "ora": "16:30", "casa": "Atalanta", "ospiti": "Venezia", "gc": 3, "go": 1, "stadio": "New Balance Arena", "video": "https://www.youtube.com/watch?v=k0GwbvnzNFU", "rinviata": false}, {"id": "2482194", "stagione": "2026-2027", "giornata": 6, "data": "2026-10-12", "ora": "18:45", "casa": "Torino", "ospiti": "Udinese", "gc": 2, "go": 1, "stadio": "Stadio Olimpico Grande Torino", "video": "https://www.youtube.com/watch?v=fENdA68nFsA", "rinviata": false}, {"id": "2482204", "stagione": "2026-2027", "giornata": 7, "data": "2026-10-16", "ora": "18:45", "casa": "Frosinone", "ospiti": "Sassuolo", "gc": 4, "go": 2, "stadio": "Stadio Benito Stirpe", "video": "https://www.youtube.com/watch?v=TsJhp3kZolA", "rinviata": false}, {"id": "2482201", "stagione": "2026-2027", "giornata": 7, "data": "2026-10-17", "ora": "20:45", "casa": "Roma", "ospiti": "Genoa", "gc": 2, "go": 0, "stadio": "Stadio Olimpico", "video": "https://www.youtube.com/watch?v=c4a99-5-1OM", "rinviata": false}, {"id": "2482202", "stagione": "2026-2027", "giornata": 7, "data": "2026-10-17", "ora": "18:00", "casa": "Bologna", "ospiti": "Inter", "gc": 1, "go": 3, "stadio": "Stadio Renato Dall'Ara", "video": "https://www.youtube.com/watch?v=u1kmQ5SxtJQ", "rinviata": false}, {"id": "2482205", "stagione": "2026-2027", "giornata": 7, "data": "2026-10-17", "ora": "15:00", "casa": "Venezia", "ospiti": "Napoli", "gc": 1, "go": 0, "stadio": "Stadio Pierluigi Penzo", "video": "https://www.youtube.com/watch?v=exh7dd4aydI", "rinviata": false}, {"id": "2482198", "stagione": "2026-2027", "giornata": 7, "data": "2026-10-18", "ora": "18:00", "casa": "Milan", "ospiti": "Atalanta", "gc": 3, "go": 2, "stadio": "Stadio Giuseppe Meazza", "video": "https://www.youtube.com/watch?v=_EZ2z-7BA9Y", "rinviata": false}, {"id": "2482199", "stagione": "2026-2027", "giornata": 7, "data": "2026-10-18", "ora": "12:30", "casa": "Udinese", "ospiti": "Lecce", "gc": 0, "go": 3, "stadio": "Bluenergy Stadium", "video": "https://www.youtube.com/watch?v=g4xQSEBW6E0", "rinviata": false}, {"id": "2482200", "stagione": "2026-2027", "giornata": 7, "data": "2026-10-18", "ora": "20:45", "casa": "Juventus", "ospiti": "Lazio", "gc": 0, "go": 3, "stadio": "Allianz Stadium Turin", "video": "https://www.youtube.com/watch?v=l-HjruOX_hk", "rinviata": false}, {"id": "2482203", "stagione": "2026-2027", "giornata": 7, "data": "2026-10-18", "ora": "15:00", "casa": "Fiorentina", "ospiti": "Como", "gc": 1, "go": 3, "stadio": "Stadio Artemio Franchi", "video": "https://www.youtube.com/watch?v=FMZ7CptAQuc", "rinviata": false}, {"id": "2482206", "stagione": "2026-2027", "giornata": 7, "data": "2026-10-19", "ora": "20:45", "casa": "Parma", "ospiti": "Torino", "gc": 0, "go": 3, "stadio": "Stadio Ennio Tardini", "video": "https://www.youtube.com/watch?v=ohAWdrIOcaA", "rinviata": false}, {"id": "2482207", "stagione": "2026-2027", "giornata": 7, "data": "2026-10-19", "ora": "18:30", "casa": "Monza", "ospiti": "Cagliari", "gc": 4, "go": 0, "stadio": "U-Power Stadium", "video": "https://www.youtube.com/watch?v=MulHLnyJGLY", "rinviata": false}, {"id": "2482214", "stagione": "2026-2027", "giornata": 8, "data": "2026-10-23", "ora": "20:45", "casa": "Torino", "ospiti": "Monza", "gc": 3, "go": 2, "stadio": "Stadio Olimpico Grande Torino", "video": "https://www.youtube.com/watch?v=0Vx--kw41Gs", "rinviata": false}, {"id": "2482208", "stagione": "2026-2027", "giornata": 8, "data": "2026-10-24", "ora": "20:45", "casa": "Lazio", "ospiti": "Parma", "gc": 2, "go": 1, "stadio": "Stadio Olimpico", "video": "https://www.youtube.com/watch?v=qioR510FnBU", "rinviata": false}, {"id": "2482209", "stagione": "2026-2027", "giornata": 8, "data": "2026-10-24", "ora": "15:00", "casa": "Cagliari", "ospiti": "Bologna", "gc": 0, "go": 2, "stadio": "Unipol Domus", "video": "https://www.youtube.com/watch?v=GYXLZdARTdA", "rinviata": false}, {"id": "2482210", "stagione": "2026-2027", "giornata": 8, "data": "2026-10-24", "ora": "18:00", "casa": "Napoli", "ospiti": "Roma", "gc": 3, "go": 3, "stadio": "Stadio Diego Armando Maradona", "video": "https://www.youtube.com/watch?v=_fn3LWD4KSU", "rinviata": false}, {"id": "2482217", "stagione": "2026-2027", "giornata": 8, "data": "2026-10-24", "ora": "15:00", "casa": "Como", "ospiti": "Sassuolo", "gc": 2, "go": 0, "stadio": "Stadio Giuseppe Sinigaglia", "video": "https://www.youtube.com/watch?v=lCqB7WkSJcU", "rinviata": false}, {"id": "2482211", "stagione": "2026-2027", "giornata": 8, "data": "2026-10-25", "ora": "20:45", "casa": "Udinese", "ospiti": "Milan", "gc": 0, "go": 2, "stadio": "Bluenergy Stadium", "video": "https://www.youtube.com/watch?v=TovUeAQkaFc", "rinviata": false}, {"id": "2482212", "stagione": "2026-2027", "giornata": 8, "data": "2026-10-25", "ora": "15:00", "casa": "Genoa", "ospiti": "Venezia", "gc": 1, "go": 0, "stadio": "Stadio Luigi Ferraris", "video": "https://www.youtube.com/watch?v=6cLJATw5mWQ", "rinviata": false}, {"id": "2482213", "stagione": "2026-2027", "giornata": 8, "data": "2026-10-25", "ora": "15:00", "casa": "Atalanta", "ospiti": "Frosinone", "gc": 4, "go": 4, "stadio": "New Balance Arena", "video": "https://www.youtube.com/watch?v=sn9uWMvW-hc", "rinviata": false}, {"id": "2482215", "stagione": "2026-2027", "giornata": 8, "data": "2026-10-25", "ora": "12:30", "casa": "Inter", "ospiti": "Fiorentina", "gc": 2, "go": 1, "stadio": "Stadio Giuseppe Meazza", "video": "https://www.youtube.com/watch?v=M4cFytVHg4E", "rinviata": false}, {"id": "2482216", "stagione": "2026-2027", "giornata": 8, "data": "2026-10-25", "ora": "18:00", "casa": "Lecce", "ospiti": "Juventus", "gc": 0, "go": 2, "stadio": "Stadio Via del mare", "video": "https://www.youtube.com/watch?v=0XtlTlbcWv4", "rinviata": false}, {"id": "2482218", "stagione": "2026-2027", "giornata": 9, "data": "2026-10-27", "ora": "18:30", "casa": "Sassuolo", "ospiti": "Lazio", "gc": 2, "go": 6, "stadio": "Mapei Stadium – Città del Tricolore", "video": "https://www.youtube.com/watch?v=fX8lccOlD84", "rinviata": false}, {"id": "2482221", "stagione": "2026-2027", "giornata": 9, "data": "2026-10-27", "ora": "20:45", "casa": "Roma", "ospiti": "Cagliari", "gc": 4, "go": 2, "stadio": "Stadio Olimpico", "video": "https://www.youtube.com/watch?v=XnprfOOfMoA", "rinviata": false}, {"id": "2482223", "stagione": "2026-2027", "giornata": 9, "data": "2026-10-27", "ora": "20:45", "casa": "Torino", "ospiti": "Como", "gc": 1, "go": 3, "stadio": "Stadio Olimpico Grande Torino", "video": "https://www.youtube.com/watch?v=Azq6pGvMY40", "rinviata": false}, {"id": "2482219", "stagione": "2026-2027", "giornata": 9, "data": "2026-10-28", "ora": "18:30", "casa": "Milan", "ospiti": "Bologna", "gc": 2, "go": 4, "stadio": "Stadio Giuseppe Meazza", "video": "https://www.youtube.com/watch?v=ZlvpQ5cVrn0", "rinviata": false}, {"id": "2482220", "stagione": "2026-2027", "giornata": 9, "data": "2026-10-28", "ora": "20:45", "casa": "Genoa", "ospiti": "Juventus", "gc": 2, "go": 0, "stadio": "Stadio Luigi Ferraris", "video": "https://www.youtube.com/watch?v=Goxa4KQJup4", "rinviata": false}, {"id": "2482225", "stagione": "2026-2027", "giornata": 9, "data": "2026-10-28", "ora": "18:30", "casa": "Venezia", "ospiti": "Inter", "gc": 0, "go": 2, "stadio": "Stadio Pierluigi Penzo", "video": "https://www.youtube.com/watch?v=h1kj0vUm9jM", "rinviata": false}, {"id": "2482226", "stagione": "2026-2027", "giornata": 9, "data": "2026-10-28", "ora": "18:30", "casa": "Parma", "ospiti": "Udinese", "gc": 0, "go": 0, "stadio": "Stadio Ennio Tardini", "video": "https://www.youtube.com/watch?v=ILtCfWl4RHw", "rinviata": false}, {"id": "2482227", "stagione": "2026-2027", "giornata": 9, "data": "2026-10-28", "ora": "20:45", "casa": "Monza", "ospiti": "Napoli", "gc": 1, "go": 4, "stadio": "U-Power Stadium", "video": "https://www.youtube.com/watch?v=yOoZ9xBaWIY", "rinviata": false}, {"id": "2482222", "stagione": "2026-2027", "giornata": 9, "data": "2026-10-29", "ora": "20:45", "casa": "Fiorentina", "ospiti": "Atalanta", "gc": 2, "go": 2, "stadio": "Stadio Artemio Franchi", "video": "https://www.youtube.com/watch?v=b86GJJUVoIM", "rinviata": false}, {"id": "2482224", "stagione": "2026-2027", "giornata": 9, "data": "2026-10-29", "ora": "18:30", "casa": "Frosinone", "ospiti": "Lecce", "gc": 5, "go": 1, "stadio": "Stadio Benito Stirpe", "video": "https://www.youtube.com/watch?v=eKZVLl6Vox4", "rinviata": false}, {"id": "2482230", "stagione": "2026-2027", "giornata": 10, "data": "2026-10-31", "ora": "19:45", "casa": "Milan", "ospiti": "Inter", "gc": 3, "go": 1, "stadio": "Stadio Giuseppe Meazza", "video": "https://www.youtube.com/watch?v=hMqZMLqkoWI", "rinviata": false}, {"id": "2482231", "stagione": "2026-2027", "giornata": 10, "data": "2026-10-31", "ora": "17:00", "casa": "Udinese", "ospiti": "Roma", "gc": 2, "go": 5, "stadio": "Bluenergy Stadium", "video": "https://www.youtube.com/watch?v=DFHlEsaMURE", "rinviata": false}, {"id": "2482234", "stagione": "2026-2027", "giornata": 10, "data": "2026-10-31", "ora": "14:00", "casa": "Bologna", "ospiti": "Monza", "gc": 2, "go": 1, "stadio": "Stadio Renato Dall'Ara", "video": "https://www.youtube.com/watch?v=dW8v_gLkZfk", "rinviata": false}, {"id": "2482228", "stagione": "2026-2027", "giornata": 10, "data": "2026-11-01", "ora": "14:00", "casa": "Lazio", "ospiti": "Cagliari", "gc": 2, "go": 1, "stadio": "Stadio Olimpico", "video": "https://www.youtube.com/watch?v=21sCVFQtVkI", "rinviata": false}, {"id": "2482232", "stagione": "2026-2027", "giornata": 10, "data": "2026-11-01", "ora": "19:45", "casa": "Juventus", "ospiti": "Napoli", "gc": 2, "go": 0, "stadio": "Allianz Stadium Turin", "video": "https://www.youtube.com/watch?v=iqciggyhLvM", "rinviata": false}, {"id": "2482235", "stagione": "2026-2027", "giornata": 10, "data": "2026-11-01", "ora": "14:00", "casa": "Frosinone", "ospiti": "Torino", "gc": 2, "go": 0, "stadio": "Stadio Benito Stirpe", "video": "https://www.youtube.com/watch?v=DnC7DzKt9o8", "rinviata": false}, {"id": "2482236", "stagione": "2026-2027", "giornata": 10, "data": "2026-11-01", "ora": "17:00", "casa": "Lecce", "ospiti": "Genoa", "gc": 1, "go": 2, "stadio": "Stadio Via del mare", "video": "https://www.youtube.com/watch?v=PO1LEZda9ns", "rinviata": false}, {"id": "2482237", "stagione": "2026-2027", "giornata": 10, "data": "2026-11-01", "ora": "11:30", "casa": "Como", "ospiti": "Venezia", "gc": 1, "go": 0, "stadio": "Stadio Giuseppe Sinigaglia", "video": "https://www.youtube.com/watch?v=9Z6hG5Kme78", "rinviata": false}, {"id": "2482229", "stagione": "2026-2027", "giornata": 10, "data": "2026-11-02", "ora": "17:30", "casa": "Sassuolo", "ospiti": "Fiorentina", "gc": 2, "go": 4, "stadio": "Mapei Stadium – Città del Tricolore", "video": "https://www.youtube.com/watch?v=uwztsWFgOXQ", "rinviata": false}, {"id": "2482233", "stagione": "2026-2027", "giornata": 10, "data": "2026-11-02", "ora": "19:45", "casa": "Atalanta", "ospiti": "Parma", "gc": 0, "go": 3, "stadio": "New Balance Arena", "video": "https://www.youtube.com/watch?v=qlLxbdZHqGM", "rinviata": false}, {"id": "2482245", "stagione": "2026-2027", "giornata": 11, "data": "2026-11-06", "ora": "19:45", "casa": "Venezia", "ospiti": "Udinese", "gc": 2, "go": 1, "stadio": "Stadio Pierluigi Penzo", "video": "https://www.youtube.com/watch?v=e0Derrl2HTk", "rinviata": false}, {"id": "2482238", "stagione": "2026-2027", "giornata": 11, "data": "2026-11-07", "ora": "14:00", "casa": "Cagliari", "ospiti": "Frosinone", "gc": 1, "go": 0, "stadio": "Unipol Domus", "video": "https://www.youtube.com/watch?v=obX7gV6L7Vk", "rinviata": false}, {"id": "2482241", "stagione": "2026-2027", "giornata": 11, "data": "2026-11-07", "ora": "19:45", "casa": "Roma", "ospiti": "Sassuolo", "gc": 3, "go": 0, "stadio": "Stadio Olimpico", "video": "https://www.youtube.com/watch?v=l2Ei1viCaro", "rinviata": false}, {"id": "2482243", "stagione": "2026-2027", "giornata": 11, "data": "2026-11-07", "ora": "14:00", "casa": "Torino", "ospiti": "Lecce", "gc": 1, "go": 1, "stadio": "Stadio Olimpico Grande Torino", "video": "https://www.youtube.com/watch?v=-COMOZxfY7U", "rinviata": false}, {"id": "2482246", "stagione": "2026-2027", "giornata": 11, "data": "2026-11-07", "ora": "17:00", "casa": "Parma", "ospiti": "Bologna", "gc": 1, "go": 2, "stadio": "Stadio Ennio Tardini", "video": "https://www.youtube.com/watch?v=NCBFBqy0INQ", "rinviata": false}, {"id": "2482239", "stagione": "2026-2027", "giornata": 11, "data": "2026-11-08", "ora": "11:30", "casa": "Napoli", "ospiti": "Lazio", "gc": 1, "go": 1, "stadio": "Stadio Diego Armando Maradona", "video": "https://www.youtube.com/watch?v=06di7zU4Km4", "rinviata": false}, {"id": "2482240", "stagione": "2026-2027", "giornata": 11, "data": "2026-11-08", "ora": "14:00", "casa": "Genoa", "ospiti": "Milan", "gc": 1, "go": 2, "stadio": "Stadio Luigi Ferraris", "video": "https://www.youtube.com/watch?v=uYtOT5EUDMc", "rinviata": false}, {"id": "2482242", "stagione": "2026-2027", "giornata": 11, "data": "2026-11-08", "ora": "19:45", "casa": "Fiorentina", "ospiti": "Juventus", "gc": 2, "go": 2, "stadio": "Stadio Artemio Franchi", "video": "https://www.youtube.com/watch?v=M1SdXxdgC_Q", "rinviata": false}, {"id": "2482244", "stagione": "2026-2027", "giornata": 11, "data": "2026-11-08", "ora": "17:00", "casa": "Inter", "ospiti": "Como", "gc": 2, "go": 0, "stadio": "Stadio Giuseppe Meazza", "video": "https://www.youtube.com/watch?v=k6NFICckV3g", "rinviata": false}, {"id": "2482247", "stagione": "2026-2027", "giornata": 11, "data": "2026-11-08", "ora": "14:00", "casa": "Monza", "ospiti": "Atalanta", "gc": 0, "go": 1, "stadio": "U-Power Stadium", "video": "https://www.youtube.com/watch?v=ONH6mN0BKCU", "rinviata": false}, {"id": "2482248", "stagione": "2026-2027", "giornata": 12, "data": "2026-11-21", "ora": "14:00", "casa": "Lazio", "ospiti": "Lecce", "gc": null, "go": null, "stadio": "Stadio Olimpico", "video": "", "rinviata": false}, {"id": "2482251", "stagione": "2026-2027", "giornata": 12, "data": "2026-11-21", "ora": "19:45", "casa": "Napoli", "ospiti": "Torino", "gc": null, "go": null, "stadio": "Stadio Diego Armando Maradona", "video": "", "rinviata": false}, {"id": "2482255", "stagione": "2026-2027", "giornata": 12, "data": "2026-11-21", "ora": "17:00", "casa": "Parma", "ospiti": "Roma", "gc": null, "go": null, "stadio": "Stadio Ennio Tardini", "video": "", "rinviata": false}, {"id": "2482256", "stagione": "2026-2027", "giornata": 12, "data": "2026-11-21", "ora": "14:00", "casa": "Como", "ospiti": "Cagliari", "gc": null, "go": null, "stadio": "Stadio Giuseppe Sinigaglia", "video": "", "rinviata": false}, {"id": "2482249", "stagione": "2026-2027", "giornata": 12, "data": "2026-11-22", "ora": "14:00", "casa": "Sassuolo", "ospiti": "Genoa", "gc": null, "go": null, "stadio": "Mapei Stadium – Città del Tricolore", "video": "", "rinviata": false}, {"id": "2482250", "stagione": "2026-2027", "giornata": 12, "data": "2026-11-22", "ora": "17:00", "casa": "Milan", "ospiti": "Frosinone", "gc": null, "go": null, "stadio": "Stadio Giuseppe Meazza", "video": "", "rinviata": false}, {"id": "2482252", "stagione": "2026-2027", "giornata": 12, "data": "2026-11-22", "ora": "11:30", "casa": "Juventus", "ospiti": "Venezia", "gc": null, "go": null, "stadio": "Allianz Stadium Turin", "video": "", "rinviata": false}, {"id": "2482253", "stagione": "2026-2027", "giornata": 12, "data": "2026-11-22", "ora": "19:45", "casa": "Atalanta", "ospiti": "Inter", "gc": null, "go": null, "stadio": "New Balance Arena", "video": "", "rinviata": false}, {"id": "2482254", "stagione": "2026-2027", "giornata": 12, "data": "2026-11-22", "ora": "14:00", "casa": "Bologna", "ospiti": "Udinese", "gc": null, "go": null, "stadio": "Stadio Renato Dall'Ara", "video": "", "rinviata": false}, {"id": "2482257", "stagione": "2026-2027", "giornata": 12, "data": "2026-11-23", "ora": "19:45", "casa": "Monza", "ospiti": "Fiorentina", "gc": null, "go": null, "stadio": "U-Power Stadium", "video": "", "rinviata": false}], "classifica": [{"squadra": "Lazio", "g": 11, "v": 9, "n": 2, "p": 0, "gf": 25, "gs": 9, "punti": 29, "dr": 16, "pos": 1, "zona": "champions"}, {"squadra": "Inter", "g": 11, "v": 9, "n": 1, "p": 1, "gf": 28, "gs": 13, "punti": 28, "dr": 15, "pos": 2, "zona": "champions"}, {"squadra": "Roma", "g": 11, "v": 8, "n": 3, "p": 0, "gf": 31, "gs": 10, "punti": 27, "dr": 21, "pos": 3, "zona": "champions"}, {"squadra": "Milan", "g": 11, "v": 7, "n": 3, "p": 1, "gf": 23, "gs": 13, "punti": 24, "dr": 10, "pos": 4, "zona": "champions"}, {"squadra": "Como", "g": 11, "v": 7, "n": 2, "p": 2, "gf": 18, "gs": 10, "punti": 23, "dr": 8, "pos": 5, "zona": "europa"}, {"squadra": "Frosinone", "g": 11, "v": 6, "n": 2, "p": 3, "gf": 24, "gs": 15, "punti": 20, "dr": 9, "pos": 6, "zona": "conference"}, {"squadra": "Juventus", "g": 11, "v": 5, "n": 3, "p": 3, "gf": 15, "gs": 12, "punti": 18, "dr": 3, "pos": 7, "zona": ""}, {"squadra": "Bologna", "g": 11, "v": 5, "n": 2, "p": 4, "gf": 16, "gs": 14, "punti": 17, "dr": 2, "pos": 8, "zona": ""}, {"squadra": "Cagliari", "g": 11, "v": 5, "n": 1, "p": 5, "gf": 10, "gs": 15, "punti": 16, "dr": -5, "pos": 9, "zona": ""}, {"squadra": "Napoli", "g": 11, "v": 4, "n": 3, "p": 4, "gf": 18, "gs": 14, "punti": 15, "dr": 4, "pos": 10, "zona": ""}, {"squadra": "Torino", "g": 11, "v": 4, "n": 2, "p": 5, "gf": 15, "gs": 17, "punti": 14, "dr": -2, "pos": 11, "zona": ""}, {"squadra": "Atalanta", "g": 11, "v": 4, "n": 2, "p": 5, "gf": 17, "gs": 20, "punti": 14, "dr": -3, "pos": 12, "zona": ""}, {"squadra": "Genoa", "g": 11, "v": 4, "n": 1, "p": 6, "gf": 11, "gs": 16, "punti": 13, "dr": -5, "pos": 13, "zona": ""}, {"squadra": "Lecce", "g": 11, "v": 3, "n": 1, "p": 7, "gf": 12, "gs": 22, "punti": 10, "dr": -10, "pos": 14, "zona": ""}, {"squadra": "Fiorentina", "g": 11, "v": 2, "n": 3, "p": 6, "gf": 17, "gs": 25, "punti": 9, "dr": -8, "pos": 15, "zona": ""}, {"squadra": "Parma", "g": 11, "v": 2, "n": 2, "p": 7, "gf": 9, "gs": 17, "punti": 8, "dr": -8, "pos": 16, "zona": ""}, {"squadra": "Sassuolo", "g": 11, "v": 2, "n": 2, "p": 7, "gf": 16, "gs": 29, "punti": 8, "dr": -13, "pos": 17, "zona": ""}, {"squadra": "Monza", "g": 11, "v": 2, "n": 1, "p": 8, "gf": 17, "gs": 25, "punti": 7, "dr": -8, "pos": 18, "zona": "retrocessione"}, {"squadra": "Venezia", "g": 11, "v": 2, "n": 0, "p": 9, "gf": 8, "gs": 21, "punti": 6, "dr": -13, "pos": 19, "zona": "retrocessione"}, {"squadra": "Udinese", "g": 11, "v": 1, "n": 2, "p": 8, "gf": 12, "gs": 25, "punti": 5, "dr": -13, "pos": 20, "zona": "retrocessione"}], "stemmi": {"Atalanta": "img/stemmi/atalanta.png", "Bologna": "img/stemmi/bologna.png", "Cagliari": "img/stemmi/cagliari.png", "Como": "img/stemmi/como.png", "Fiorentina": "img/stemmi/fiorentina.png", "Frosinone": "img/stemmi/frosinone.png", "Genoa": "img/stemmi/genoa.png", "Inter": "img/stemmi/inter.png", "Juventus": "img/stemmi/juventus.png", "Lazio": "img/stemmi/lazio.png", "Lecce": "img/stemmi/lecce.png", "Milan": "img/stemmi/milan.png", "Monza": "img/stemmi/monza.png", "Napoli": "img/stemmi/napoli.png", "Parma": "img/stemmi/parma.png", "Roma": "img/stemmi/roma.png", "Sassuolo": "img/stemmi/sassuolo.png", "Torino": "img/stemmi/torino.png", "Udinese": "img/stemmi/udinese.png", "Venezia": "img/stemmi/venezia.png"}, "esultanze": [{"giocatore": "Cristiano Ronaldo", "paese": "Portogallo", "mossa": "Il «Siuuu!»", "storia": "La esultanza più imitata del mondo. Ronaldo corre, salta girandosi in aria e atterra a gambe larghe. Tutto lo stadio urla con lui: «Siuuu!», che in spagnolo vuol dire «sì!».", "passi": ["Corri verso la bandierina", "Salta e fai mezzo giro in aria", "Atterra a gambe larghe, braccia tese verso il basso", "Urla «SIUUU!»"], "video": "Cristiano Ronaldo Siuuu celebration", "foto": "img/calciatori/cristiano-ronaldo.jpg", "credito": {"autore": "Bryan Berlin", "licenza": "CC BY-SA 4.0", "pagina": "https://commons.wikimedia.org/wiki/File:Cristiano_Ronaldo_Croatia_v_Portugal_2_July_2026-075_(cropped).jpg"}}, {"giocatore": "Kylian Mbappé", "paese": "Francia", "mossa": "Braccia incrociate", "storia": "Mbappé si ferma serio serio con le braccia incrociate, come un supereroe. L'ha copiata dal fratellino Ethan, che la faceva quando lo batteva ai videogiochi di calcio.", "passi": ["Corri e poi fermati di colpo", "Incrocia le braccia sul petto", "Faccia seria, sguardo lontano", "Resta immobile come una statua"], "video": "Mbappé celebration arms crossed", "foto": "img/calciatori/kylian-mbappe.jpg", "credito": {"autore": "Bryan Berlin", "licenza": "CC BY-SA 4.0", "pagina": "https://commons.wikimedia.org/wiki/File:Kylian_Mbappe_France_v_Senegal_16_June_2026-391_(cropped).jpg"}}, {"giocatore": "Erling Haaland", "paese": "Norvegia", "mossa": "La meditazione", "storia": "Il gigante norvegese, dopo il gol, si siede a gambe incrociate con le mani sulle ginocchia e gli occhi chiusi. Calmo come un monaco, mentre lo stadio impazzisce.", "passi": ["Siediti per terra", "Incrocia le gambe", "Mani aperte sulle ginocchia", "Chiudi gli occhi e respira: ommm"], "video": "Haaland meditation celebration", "foto": "img/calciatori/erling-haaland.jpg", "credito": {"autore": "Bryan Berlin", "licenza": "CC BY-SA 4.0", "pagina": "https://commons.wikimedia.org/wiki/File:Erling_Haaland_Morocco_v_Norway_7_June_2026-51.jpg"}}, {"giocatore": "Lionel Messi", "paese": "Argentina", "mossa": "Due dita al cielo", "storia": "Messi indica il cielo con tutte e due le mani. Dedica ogni gol a nonna Celia, che da piccolo lo accompagnava agli allenamenti.", "passi": ["Guarda in alto", "Alza le braccia", "Indica il cielo con gli indici", "Pensa a una persona a cui vuoi bene"], "video": "Messi celebration pointing to the sky", "foto": "img/calciatori/lionel-messi.jpg", "credito": {"autore": "Bryan Berlin", "licenza": "CC BY-SA 4.0", "pagina": "https://commons.wikimedia.org/wiki/File:Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg"}}, {"giocatore": "Paulo Dybala", "paese": "Argentina", "mossa": "La Dybala Mask", "storia": "Dybala mette la mano davanti al viso come la maschera di un gladiatore: pollice e indice formano una «L» sotto gli occhi. Vuol dire: nei momenti difficili si combatte con coraggio.", "passi": ["Apri pollice e indice a forma di L", "Appoggia la mano sotto gli occhi", "Lo sguardo da gladiatore", "Corri verso i tifosi"], "video": "Dybala mask celebration", "foto": "img/calciatori/paulo-dybala.jpg", "credito": {"autore": "Olga Shcherbytska", "licenza": "CC BY-SA 4.0", "pagina": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%B0%D1%82%D1%87_%C2%AB%D0%94%D0%B8%D0%BD%D0%B0%D0%BC%D0%BE%C2%BB_-_%C2%AB%D0%AE%D0%B2%D0%B5%D0%BD%D1%82%D1%83%D1%81%C2%BB_0-2._20_%D0%BE%D0%BA%D1%82%D1%8F%D0%B1%D1%80%D1%8F_2020_%D0%B3%D0%BE%D0%B4%D0%B0_%E2%80%94_1153905_(cropped).jpg"}}, {"giocatore": "Jude Bellingham", "paese": "Inghilterra", "mossa": "Braccia spalancate", "storia": "Bellingham si ferma davanti ai tifosi a braccia aperte, petto in fuori e sorriso. I tifosi del Real Madrid gli cantano «Hey Jude», la canzone dei Beatles.", "passi": ["Corri davanti alla curva", "Fermati a piedi uniti", "Apri le braccia più che puoi", "Petto in fuori e sorriso"], "video": "Jude Bellingham celebration arms wide", "foto": "img/calciatori/jude-bellingham.jpg", "credito": {"autore": "Bryan Berlin", "licenza": "CC BY-SA 4.0", "pagina": "https://commons.wikimedia.org/wiki/File:Jude_Bellingham_England_v_Ghana_23_June_2026-061_(cropped).jpg"}}, {"giocatore": "Antoine Griezmann", "paese": "Francia", "mossa": "Il balletto della L", "storia": "Griezmann fa un balletto preso dal videogioco Fortnite: mano a forma di L sulla fronte e saltelli da una gamba all'altra. L'ha fatto anche ai Mondiali del 2018, che la Francia ha vinto.", "passi": ["Mano a L sulla fronte", "Saltella su una gamba", "Cambia gamba a tempo", "Sorridi alla telecamera"], "video": "Griezmann Take the L celebration", "foto": "img/calciatori/antoine-griezmann.jpg", "credito": {"autore": "Антон Зайцев", "licenza": "CC BY-SA 3.0", "pagina": "https://commons.wikimedia.org/wiki/File:FRA-ARG_(10)_(cropped).jpg"}}, {"giocatore": "Francesco Totti", "paese": "Italia · Roma", "mossa": "Il selfie e il pollice in bocca", "storia": "Nel derby del 2015 Totti segna, prende un telefono e si fa un selfie con la curva della Roma dietro. Quando sono nati i suoi figli, invece, esultava con il pollice in bocca.", "passi": ["Corri verso i tuoi tifosi", "Girati di spalle", "Alza un telefono immaginario", "Clic! Selfie con tutto lo stadio"], "video": "Totti selfie derby 2015", "foto": "img/calciatori/francesco-totti.jpg", "credito": {"autore": "Антон Зайцев", "licenza": "CC BY-SA 3.0", "pagina": "https://commons.wikimedia.org/wiki/File:KL-2018_(4).jpg"}}, {"giocatore": "Alessandro Del Piero", "paese": "Italia · Juventus", "mossa": "La linguaccia", "storia": "Del Piero, capitano della Juventus per tanti anni, correva verso i tifosi con la lingua di fuori e le braccia larghe. Una linguaccia diventata famosa in tutta Italia.", "passi": ["Corri a braccia larghe", "Tira fuori la lingua", "Guarda i tifosi", "Non fermarti finché non ti abbracciano"], "video": "Del Piero linguaccia esultanza", "foto": "img/calciatori/alessandro-del-piero.jpg", "credito": {"autore": "Barcex", "licenza": "CC BY-SA 4.0", "pagina": "https://commons.wikimedia.org/wiki/File:25th_Laureus_World_Sports_Awards_-_Alessandro_Del_Piero_-_240421_155220_(cropped)_(cropped).jpg"}}, {"giocatore": "Marco Tardelli", "paese": "Italia", "mossa": "L'urlo di Tardelli", "storia": "Finale dei Mondiali 1982, Italia contro Germania. Tardelli segna e corre urlando, scuotendo la testa con i pugni stretti. È l'urlo più famoso della storia del calcio italiano.", "passi": ["Corri a pugni chiusi", "Scuoti la testa", "Urla con tutto il fiato", "Non smettere di correre"], "video": "Tardelli urlo 1982", "foto": "img/calciatori/marco-tardelli.jpg", "credito": {"autore": "Harald Krichel", "licenza": "CC BY-SA 4.0", "pagina": "https://commons.wikimedia.org/wiki/File:Marco_Tardelli-0282.jpg"}}, {"giocatore": "Bebeto", "paese": "Brasile", "mossa": "Il bambino in braccio", "storia": "Mondiali 1994: Bebeto segna e, insieme ai compagni, finge di cullare un neonato. Suo figlio era nato due giorni prima. Oggi lo fanno tutti i calciatori quando diventano papà.", "passi": ["Unisci le braccia davanti alla pancia", "Fai dondolare a destra e sinistra", "Chiama due compagni", "Cullate tutti insieme"], "video": "Bebeto rocking baby celebration 1994", "foto": "img/calciatori/bebeto.jpg", "credito": {"autore": "Sergio Savarese from Sao Paulo City  /  Ipiranga, Brasil", "licenza": "CC BY-SA 2.0", "pagina": "https://commons.wikimedia.org/wiki/File:Bebeto_brazil_(cropped).jpg"}}, {"giocatore": "Paul Pogba", "paese": "Francia", "mossa": "Il dab", "storia": "Pogba ha portato nel calcio il «dab», un passo di danza: la testa si nasconde nel gomito e l'altro braccio si allunga in diagonale.", "passi": ["Piega un braccio davanti alla faccia", "Nascondi il naso nel gomito", "Allunga l'altro braccio in alto", "Tieni la posa un secondo"], "video": "Pogba dab celebration", "foto": "img/calciatori/paul-pogba.jpg", "credito": {"autore": "Gilzetbase", "licenza": "CC BY-SA 4.0", "pagina": "https://commons.wikimedia.org/wiki/File:Paul_Pogba_Cannes_2025.jpg"}}, {"giocatore": "Roger Milla", "paese": "Camerun", "mossa": "Il ballo della bandierina", "storia": "Mondiali 1990, proprio in Italia! Milla aveva 38 anni e dopo ogni gol ballava muovendo i fianchi attorno alla bandierina del calcio d'angolo. Il mondo intero si è messo a ballare con lui.", "passi": ["Corri alla bandierina", "Una mano sulla pancia, una in alto", "Muovi i fianchi a ritmo", "Gira attorno alla bandierina"], "video": "Roger Milla corner flag dance 1990", "foto": "img/calciatori/roger-milla.jpg", "credito": {"autore": "Jmex60", "licenza": "CC BY-SA 3.0", "pagina": "https://commons.wikimedia.org/wiki/File:Milla2008cropped.jpg"}}, {"giocatore": "Peter Crouch", "paese": "Inghilterra", "mossa": "Il robot", "storia": "Crouch era altissimo, quasi due metri. Dopo il gol ballava a scatti come un robot, con le braccia rigide. Diceva che lo faceva solo quando segnava gol importanti.", "passi": ["Braccia rigide a 90 gradi", "Muovi un braccio alla volta a scatti", "Gambe dritte, passi meccanici", "Faccia seria: sei una macchina!"], "video": "Peter Crouch robot dance", "foto": "img/calciatori/peter-crouch.jpg", "credito": {"autore": "Original:  CFC Unofficial (Debs) / Derivative work:  Danyele", "licenza": "CC BY-SA 2.0", "pagina": "https://commons.wikimedia.org/wiki/File:Chelsea_3_Stoke_0_(13677350585)_-_Peter_Crouch_(cropped).jpg"}}]};
+
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const giorno = (d, opz = { weekday: "short", day: "numeric", month: "short" }) => new Date(d + "T12:00:00").toLocaleDateString("it-IT", opz);
+const stemma = (sq, lato = 44) => DATI.stemmi[sq] ? `<img src="${DATI.stemmi[sq]}" width="${lato}" height="${lato}" alt="" decoding="async">` : "";
+const leggi = k => { try { return localStorage.getItem(k) || ""; } catch { return ""; } };
+const salva = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+const riduciMovimento = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+let cuore = leggi("squadra-cuore");
+
+if (!DATI) {
+  $("#vista").innerHTML = "<section><h2>Mancano i dati</h2><p>Esegui <code>python aggiorna_sito.py</code> e poi apri <code>index.html</code>.</p></section>";
+  throw new Error("nessun dato");
+}
+
+const giocate = DATI.partite.filter(p => p.gc !== null).sort((a, b) => (b.data + b.ora).localeCompare(a.data + a.ora));
+const squadre = Object.keys(DATI.stemmi).sort((a, b) => a.localeCompare(b, "it"));
+const stagioneOra = DATI.stagione;
+
+// Sottotitolo e squadra del cuore
+const [aa, mm] = DATI.aggiornato.split(" ");
+$("#sottotitolo").textContent = `Serie A ${stagioneOra.replace("-20", "/")} · aggiornato ${giorno(aa, { day: "numeric", month: "long" })}`;
+$("#agg").textContent = `Dati aggiornati il ${giorno(aa, { day: "numeric", month: "long", year: "numeric" })} alle ${mm}.`;
+const sel = $("#scelta-cuore");
+sel.insertAdjacentHTML("beforeend", squadre.map(s => `<option ${s === cuore ? "selected" : ""}>${esc(s)}</option>`).join(""));
+sel.addEventListener("change", () => { cuore = sel.value; salva("squadra-cuore", cuore); mostra(); });
+
+const esito = (p, sq) => {
+  const mie = p.casa === sq ? p.gc : p.go, loro = p.casa === sq ? p.go : p.gc;
+  return mie > loro ? "V" : mie < loro ? "P" : "N";
+};
+const forma = (sq, n = 5) => giocate.filter(p => p.stagione === stagioneOra && (p.casa === sq || p.ospiti === sq)).slice(0, n).reverse().map(p => esito(p, sq));
+const pallini = arr => `<span class="forma" aria-label="Ultime partite: ${arr.join(" ")}">${arr.map(e => `<i class="${e}" title="${{ V: "Vinta", N: "Pareggiata", P: "Persa" }[e]}">${e}</i>`).join("")}</span>`;
+
+function cartaPartita(p) {
+  const fatta = p.gc !== null;
+  const cl = (a, b) => !fatta || a === b ? "" : a > b ? "vince" : "perde";
+  const mia = cuore && (p.casa === cuore || p.ospiti === cuore);
+  const centro = fatta ? `<div class="punteggio" aria-label="${p.gc} a ${p.go}">${p.gc}-${p.go}</div>`
+    : `<div class="punteggio ora">${p.rinviata ? "Rinviata" : esc(p.ora || "–")}</div>`;
+  return `<article class="partita ${mia ? "mia" : ""}">
+    <div class="riga">
+      <div class="sq ${cl(p.gc, p.go)}">${stemma(p.casa)}${esc(p.casa)}</div>
+      ${centro}
+      <div class="sq ${cl(p.go, p.gc)}">${stemma(p.ospiti)}${esc(p.ospiti)}</div>
+    </div>
+    <div class="info"><span>${giorno(p.data)} · ${esc(p.stadio)}</span>${p.video ? `<a href="${esc(p.video)}" target="_blank" rel="noopener">▶ Gol e azioni</a>` : ""}</div>
+  </article>`;
+}
+
+function boxTuaSquadra() {
+  if (!cuore) return "";
+  const riga = DATI.classifica.find(r => r.squadra === cuore);
+  const ultima = giocate.find(p => p.casa === cuore || p.ospiti === cuore);
+  const prossima = DATI.partite.filter(p => p.gc === null && !p.rinviata && (p.casa === cuore || p.ospiti === cuore)).sort((a, b) => a.data.localeCompare(b.data))[0];
+  return `<section class="tua" aria-label="La tua squadra">
+    ${stemma(cuore, 64)}
+    <div><div class="etichetta">La tua squadra</div><div class="nome">${esc(cuore)}</div></div>
+    <dl>
+      ${riga ? `<div><dt>Posizione</dt><dd>${riga.pos}ª con ${riga.punti} punti</dd></div>` : ""}
+      ${ultima ? `<div><dt>Ultima partita</dt><dd>${esc(ultima.casa)} ${ultima.gc}-${ultima.go} ${esc(ultima.ospiti)}</dd></div>` : ""}
+      ${prossima ? `<div><dt>Prossima</dt><dd>${esc(prossima.casa === cuore ? prossima.ospiti : prossima.casa)} · ${giorno(prossima.data)}</dd></div>` : ""}
+      <div><dt>Ultime 5</dt><dd>${pallini(forma(cuore))}</dd></div>
+    </dl>
+  </section>`;
+}
+
+// ---------- Vista: ultima giornata ----------
+function vistaGiornata() {
+  const ultimaG = giocate.find(p => p.stagione === stagioneOra)?.giornata;
+  const diQuesta = DATI.partite.filter(p => p.stagione === stagioneOra && p.giornata === ultimaG).sort((a, b) => (a.data + a.ora).localeCompare(b.data + b.ora));
+  const fatte = diQuesta.filter(p => p.gc !== null);
+  const prossime = DATI.partite.filter(p => p.gc === null && !p.rinviata).sort((a, b) => (a.data + a.ora).localeCompare(b.data + b.ora));
+  const gol = fatte.reduce((s, p) => s + p.gc + p.go, 0);
+  const piuGol = [...fatte].sort((a, b) => (b.gc + b.go) - (a.gc + a.go))[0];
+  const larga = [...fatte].sort((a, b) => Math.abs(b.gc - b.go) - Math.abs(a.gc - a.go))[0];
+  const pari = fatte.filter(p => p.gc === p.go).length;
+  const giornataProssima = prossime[0]?.giornata;
+  return `
+    ${boxTuaSquadra()}
+    <section>
+      <div class="intesta"><h2>Giornata ${ultimaG}</h2><p>${fatte.length ? `dal ${giorno(fatte[0].data, { day: "numeric", month: "long" })} al ${giorno(fatte.at(-1).data, { day: "numeric", month: "long" })}` : ""}</p></div>
+      <div class="fatti">
+        <div class="fatto"><b>${gol}</b><span>gol segnati in ${fatte.length} partite</span></div>
+        ${piuGol ? `<div class="fatto"><b>${piuGol.gc + piuGol.go} gol</b><span>la partita più pazza: ${esc(piuGol.casa)}-${esc(piuGol.ospiti)} ${piuGol.gc}-${piuGol.go}</span></div>` : ""}
+        ${larga ? `<div class="fatto"><b>+${Math.abs(larga.gc - larga.go)}</b><span>la vittoria più larga: ${esc(larga.gc > larga.go ? larga.casa : larga.ospiti)} (${larga.gc}-${larga.go})</span></div>` : ""}
+        <div class="fatto"><b>${pari}</b><span>${pari === 1 ? "pareggio" : "pareggi"}</span></div>
+      </div>
+      <div class="griglia">${diQuesta.map(cartaPartita).join("")}</div>
+    </section>
+    ${prossime.length ? `<section>
+      <div class="intesta"><h2>Prossime partite</h2><p>Giornata ${giornataProssima} · orari italiani</p></div>
+      <div class="griglia">${prossime.filter(p => p.giornata === giornataProssima).map(cartaPartita).join("")}</div>
+    </section>` : ""}`;
+}
+
+// ---------- Vista: ultime 100 ----------
+let filtro = "";
+function vistaCento() {
+  const cento = giocate.slice(0, 100);
+  const lista = filtro ? cento.filter(p => p.casa === filtro || p.ospiti === filtro) : cento;
+  const n = lista.length || 1;
+  const gol = lista.reduce((s, p) => s + p.gc + p.go, 0);
+  let casa = 0, pari = 0, fuori = 0;
+  lista.forEach(p => p.gc > p.go ? casa++ : p.gc < p.go ? fuori++ : pari++);
+  const perc = x => Math.round(x / n * 100);
+
+  const perG = new Map();
+  [...cento].reverse().forEach(p => { const k = `${p.stagione}|${p.giornata}`; perG.set(k, (perG.get(k) || 0) + p.gc + p.go); });
+  const maxG = Math.max(...perG.values());
+  const barre = [...perG.entries()].map(([k, v]) => `<div class="b" title="Giornata ${k.split("|")[1]}: ${v} gol"><span>${v}</span><div style="height:${v / maxG * 82}%"></div></div>`).join("");
+  const asse = [...perG.keys()].map(k => `<span>G${k.split("|")[1]}</span>`).join("");
+
+  let record = "";
+  if (filtro) {
+    let v = 0, nn = 0, pp = 0, gf = 0, gs = 0;
+    lista.forEach(p => { const e = esito(p, filtro); e === "V" ? v++ : e === "N" ? nn++ : pp++; gf += p.casa === filtro ? p.gc : p.go; gs += p.casa === filtro ? p.go : p.gc; });
+    record = `<p class="record">${esc(filtro)}: ${v} vinte, ${nn} pareggiate, ${pp} perse · ${gf} gol fatti, ${gs} subiti</p>`;
+  }
+
+  const gruppi = new Map();
+  lista.forEach(p => { const k = `${p.stagione}|${p.giornata}`; if (!gruppi.has(k)) gruppi.set(k, []); gruppi.get(k).push(p); });
+  const righe = [...gruppi.entries()].map(([k, ps]) => {
+    const [st, g] = k.split("|");
+    return `<div class="gruppo"><div class="etichetta">Giornata ${g}${st !== stagioneOra ? ` · stagione ${st}` : ""}</div>
+      ${ps.map(p => {
+        const mia = cuore && (p.casa === cuore || p.ospiti === cuore);
+        return `<div class="compatta ${mia ? "mia" : ""}">
+          <span class="d">${giorno(p.data, { day: "numeric", month: "short" })}</span>
+          <span class="c ${p.gc < p.go ? "perde" : ""}"><span class="nome-lungo">${esc(p.casa)}</span>${stemma(p.casa, 24)}</span>
+          <span class="s">${p.gc}-${p.go}</span>
+          <span class="o ${p.go < p.gc ? "perde" : ""}">${stemma(p.ospiti, 24)}<span class="nome-lungo">${esc(p.ospiti)}</span></span>
+          ${p.video ? `<a class="v" href="${esc(p.video)}" target="_blank" rel="noopener" aria-label="Guarda gol e azioni di ${esc(p.casa)}-${esc(p.ospiti)}">▶</a>` : "<span></span>"}
+        </div>`;
+      }).join("")}</div>`;
+  }).join("");
+
+  return `
+    <section>
+      <div class="intesta"><h2>Le ultime 100 partite</h2><p>dalla più recente alla più vecchia</p></div>
+      <div class="filtri"><label for="filtro-squadra">Mostra solo
+        <select id="filtro-squadra"><option value="">Tutte le squadre</option>${squadre.map(s => `<option ${s === filtro ? "selected" : ""}>${esc(s)}</option>`).join("")}</select></label>
+      </div>
+      ${record}
+      <div class="fatti">
+        <div class="fatto"><b>${lista.length}</b><span>partite</span></div>
+        <div class="fatto"><b>${gol}</b><span>gol in tutto</span></div>
+        <div class="fatto"><b>${(gol / n).toFixed(1).replace(".", ",")}</b><span>gol a partita, in media</span></div>
+      </div>
+      <div>
+        <div class="barra-esiti" role="img" aria-label="Vince la squadra di casa ${perc(casa)}%, pareggio ${perc(pari)}%, vince la squadra ospite ${perc(fuori)}%">
+          <div style="flex:${casa};background:var(--vinta)">${perc(casa)}%</div>
+          <div style="flex:${pari};background:var(--pari)">${perc(pari)}%</div>
+          <div style="flex:${fuori};background:var(--rosso)">${perc(fuori)}%</div>
+        </div>
+        <div class="legenda">
+          <span style="--c:var(--vinta)">vince chi gioca in casa (${casa})</span>
+          <span style="--c:var(--pari)">pareggio (${pari})</span>
+          <span style="--c:var(--rosso)">vince la squadra ospite (${fuori})</span>
+        </div>
+      </div>
+      ${filtro ? "" : `<div class="grafico"><h3>Gol per giornata</h3><div class="barre">${barre}</div><div class="assex">${asse}</div></div>`}
+      <div class="elenco">${righe}</div>
+    </section>`;
+}
+
+// ---------- Vista: classifica ----------
+function zona(z) {
+  if (/champions/i.test(z)) return "var(--erba)";
+  if (/conference/i.test(z)) return "#5fb3d9";
+  if (/europa/i.test(z)) return "#e58b20";
+  if (/releg|retroc/i.test(z)) return "var(--rosso)";
+  return "transparent";
+}
+function vistaClassifica() {
+  const zoneViste = [...new Map(DATI.classifica.filter(r => zona(r.zona) !== "transparent").map(r => [r.zona, zona(r.zona)])).entries()];
+  const nomiZone = z => /champions/i.test(z) ? "Champions League" : /conference/i.test(z) ? "Conference League" : /europa/i.test(z) ? "Europa League" : /releg|retroc/i.test(z) ? "Retrocessione in Serie B" : z;
+  return `<section>
+    <div class="intesta"><h2>Classifica</h2><p>Serie A ${stagioneOra.replace("-20", "/")}</p></div>
+    <div class="tabella-box"><table>
+      <thead><tr><th>#</th><th class="squadra">Squadra</th><th title="Punti">Pt</th><th title="Giocate">G</th><th class="x" title="Vinte">V</th><th class="x" title="Pareggiate">N</th><th class="x" title="Perse">P</th><th class="x" title="Gol fatti">GF</th><th class="x" title="Gol subiti">GS</th><th class="x" title="Differenza reti">DR</th><th>Ultime 5</th></tr></thead>
+      <tbody>${DATI.classifica.map(r => `<tr class="${r.squadra === cuore ? "mia" : ""}">
+        <td class="pos" style="--z:${zona(r.zona)}">${r.pos}</td>
+        <td class="squadra"><span>${stemma(r.squadra, 24)}${esc(r.squadra)}</span></td>
+        <td class="pt">${r.punti}</td><td>${r.g}</td><td class="x">${r.v}</td><td class="x">${r.n}</td><td class="x">${r.p}</td><td class="x">${r.gf}</td><td class="x">${r.gs}</td><td class="x">${r.dr > 0 ? "+" : ""}${r.dr}</td>
+        <td>${pallini(forma(r.squadra))}</td></tr>`).join("")}</tbody>
+    </table></div>
+    <div class="zone">${zoneViste.map(([z, c]) => `<span style="--c:${c}">${esc(nomiZone(z))}</span>`).join("")}</div>
+    <p class="nota">Ultime 5: la più vecchia a sinistra, la più recente a destra. V vinta, N pareggiata, P persa.</p>
+    <p class="nota">Classifica calcolata dai risultati. A pari punti qui conta la differenza reti (nel regolamento vero contano prima gli scontri diretti).</p>
+  </section>`;
+}
+
+// ---------- Vista: esultanze ----------
+function vistaEsultanze() {
+  return `<section>
+    <div class="intesta"><h2>Le esultanze più famose</h2><p>${DATI.esultanze.length} mosse da imparare</p></div>
+    <div class="sorpresa">
+      <p>Hai segnato in cortile? Premi il bottone e scopri quale esultanza fare. Poi premi «Prova la mossa» e segui i passi!</p>
+      <button class="btn" id="sorpresa" type="button">Esultanza a sorpresa</button>
+    </div>
+    <div class="esultanze">${DATI.esultanze.map((e, i) => `
+      <article class="es" id="es-${i}">
+        <figure>
+          ${e.foto ? `<img src="${e.foto}" alt="${esc(e.giocatore)}" width="640" height="480" loading="${i < 2 ? "eager" : "lazy"}" decoding="async">` : ""}
+          <figcaption>${esc(e.mossa)}</figcaption>
+        </figure>
+        <div class="corpo">
+          <div class="chi"><b>${esc(e.giocatore)}</b><span>${esc(e.paese)}</span></div>
+          <p>${esc(e.storia)}</p>
+          <div class="etichetta">Come si fa</div>
+          <ol>${e.passi.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+          <div class="bottoni">
+            <button class="btn prova" type="button" data-i="${i}">Prova la mossa</button>
+            <a class="btn chiaro" href="https://www.youtube.com/results?search_query=${encodeURIComponent(e.video)}" target="_blank" rel="noopener">▶ Guarda i video</a>
+          </div>
+          ${e.credito ? `<div class="credito">Foto: ${esc(e.credito.autore)}${e.credito.licenza ? `, ${esc(e.credito.licenza)}` : ""} · <a href="${esc(e.credito.pagina)}" target="_blank" rel="noopener">Wikimedia Commons</a></div>` : ""}
+        </div>
+      </article>`).join("")}
+    </div>
+  </section>`;
+}
+
+let timerProva = null;
+function prova(i) {
+  clearInterval(timerProva);
+  document.querySelectorAll(".es li.attivo").forEach(li => li.classList.remove("attivo"));
+  const passi = [...document.querySelectorAll(`#es-${i} li`)];
+  let k = 0;
+  const vai = () => {
+    passi.forEach((li, j) => li.classList.toggle("attivo", j === k));
+    if (k++ >= passi.length) { clearInterval(timerProva); passi.forEach(li => li.classList.remove("attivo")); }
+  };
+  vai();
+  timerProva = setInterval(vai, 1300);
+}
+
+document.addEventListener("click", ev => {
+  const b = ev.target.closest(".prova");
+  if (b) prova(b.dataset.i);
+  if (ev.target.closest("#sorpresa")) {
+    const i = Math.floor(Math.random() * DATI.esultanze.length);
+    const card = $(`#es-${i}`);
+    card.classList.remove("flash"); void card.offsetWidth; card.classList.add("flash");
+    card.scrollIntoView({ behavior: riduciMovimento() ? "auto" : "smooth", block: "start" });
+    setTimeout(() => prova(i), 700);
+  }
+});
+document.addEventListener("change", ev => {
+  if (ev.target.id === "filtro-squadra") { filtro = ev.target.value; mostra(); }
+});
+
+// ---------- Navigazione ----------
+const VISTE = { "giornata": vistaGiornata, "ultime-100": vistaCento, "classifica": vistaClassifica, "esultanze": vistaEsultanze };
+function mostra() {
+  const nomeVista = VISTE[location.hash.slice(1)] ? location.hash.slice(1) : "giornata";
+  document.querySelectorAll(".tabs a").forEach(a => {
+    if (a.getAttribute("href") === "#" + nomeVista) a.setAttribute("aria-current", "page");
+    else a.removeAttribute("aria-current");
+  });
+  $("#vista").innerHTML = VISTE[nomeVista]();
+}
+// Toccare di nuovo la sezione già aperta riporta in cima, come nelle app dell'iPhone
+document.querySelector(".tabs").addEventListener("click", ev => {
+  const a = ev.target.closest("a");
+  if (a && a.getAttribute("aria-current") === "page") { ev.preventDefault(); scrollTo({ top: 0, behavior: riduciMovimento() ? "auto" : "smooth" }); }
+});
+addEventListener("hashchange", () => { mostra(); scrollTo({ top: 0 }); });
+mostra();
+</script>

@@ -1,0 +1,47 @@
+name: Aggiorna i risultati
+
+# Ogni lunedì alle 7:00 (ora italiana d'inverno) scarica i nuovi risultati
+# e ripubblica il sito. Si può lanciare anche a mano da GitHub:
+# scheda "Actions" > "Aggiorna i risultati" > "Run workflow".
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: aggiorna
+  cancel-in-progress: false
+
+jobs:
+  aggiorna:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installa Pillow (per le immagini)
+        run: pip install pillow
+
+      - name: Scarica risultati e costruisci il sito
+        env:
+          TZ: Europe/Rome
+        run: python aggiorna_sito.py
+
+      - name: Salva le modifiche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nessun risultato nuovo."
+          else
+            git commit -m "Aggiorna risultati $(date +%Y-%m-%d)"
+            git push
+          fi
