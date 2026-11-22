@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 .DS_Store
 Thumbs.db
+animazioni/renders/
+animazioni/.hyperframes/
+animazioni/node_modules/
